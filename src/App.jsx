@@ -1,28 +1,40 @@
 import { useState, useEffect } from 'react'; 
 import apiClient from "./api/client";
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import LoginPage from "./pages/LoginPage"; 
+import DashboardPage from "./pages/DashboardPage/DashboardPage"; 
+import ProtectedRoute from './routes/ProtectedRoute';
+import GenerateProgramPage from './pages/GenerateProgramPage/GenerateProgramPage';
+import ProgramDetailPage from './pages/ProgramDetailPage/ProgramDetailPage';
+
 function App() {
-  const [ message, setMessage ] = useState("Checking backend..."); 
-  useEffect(() => { 
-    const checkBackend = async () => {
-      try {
-        const response = await apiClient.get("/"); 
-
-        setMessage(response.data.message); 
-
-      } catch (err) {
-        setMessage(err.response?.data?.message || err.message); 
-      }
-    }; 
-    checkBackend(); 
-  }, []); 
-
   return (
-    <main>
-      <h1>Workout Buddy</h1>
-      <p>{ message }</p>
-    </main>
+    <BrowserRouter> 
+      <Routes>
+        <Route path='/' element={ <LoginPage /> } />
+
+        <Route path='/dashboard' element={ 
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/generate" element={ 
+          <ProtectedRoute>
+            <GenerateProgramPage />
+          </ProtectedRoute>
+         } />
+
+         <Route path='/programs/:id' element= {
+          <ProtectedRoute>
+            <ProgramDetailPage />
+          </ProtectedRoute>
+         } />
+      </ Routes>
+    </BrowserRouter>
   ); 
-}
+}; 
 
 export default App
