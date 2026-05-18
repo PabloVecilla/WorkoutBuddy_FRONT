@@ -1,5 +1,5 @@
 .env
-.envlocal
+.env.local
 # Logs
 logs
 *.log
