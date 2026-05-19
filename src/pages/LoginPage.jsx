@@ -1,5 +1,5 @@
 import { useState, useContext } from "react"; 
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; 
 
 import { AuthContext } from "../context/authContext";
 
@@ -56,6 +56,7 @@ const LoginPage = () => {
 
         </form>
         {error && <p>{ error }</p>}
+        <Link to="/register">Create an account</Link>
     </main>
    );
 }; 
