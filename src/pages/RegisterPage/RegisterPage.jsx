@@ -35,7 +35,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <main>
+    <main className={styles.RegisterPage}>
       <h1>Create account</h1>
 
       <form onSubmit={handleSubmit}>
