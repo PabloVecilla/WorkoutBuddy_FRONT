@@ -4,6 +4,7 @@ import apiClient from "./api/client";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import LoginPage from "./pages/LoginPage"; 
+import RegisterPage from './pages/RegisterPage/RegisterPage';
 import DashboardPage from "./pages/DashboardPage/DashboardPage"; 
 import ProtectedRoute from './routes/ProtectedRoute';
 import GenerateProgramPage from './pages/GenerateProgramPage/GenerateProgramPage';
