@@ -5,7 +5,7 @@
     align-items: center;
     background-color: black;
     color: white;
-    min-height: 100vh;
+    min-height: 100dvh;
     flex: 1;
 
     & h1, h2 {
