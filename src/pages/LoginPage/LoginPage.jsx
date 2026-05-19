@@ -39,19 +39,26 @@ const LoginPage = () => {
         <h1>Login</h1>
 
         <form onSubmit={handleSubmit}>
-            <input type="email"
+            <p>
+                <label htmlFor="mail">Email: </label>
+                <input type="email"
                     name="mail"
                     placeholder="Email"
                     value={formData.mail}
                     onChange={handleChange} 
             />
 
-            <input type="password"
+            </p>
+
+            <p>
+                <label htmlFor="pass">Password: </label>
+                <input type="password"
                     name="pass"
                     placeholder="Password"
                     value={formData.pass} 
                     onChange={handleChange}
-            />
+                />
+            </p>
 
             <button type="submit">Login</button>
 
