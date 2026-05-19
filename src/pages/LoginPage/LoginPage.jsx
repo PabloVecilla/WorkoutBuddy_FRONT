@@ -1,7 +1,8 @@
 import { useState, useContext } from "react"; 
 import { useNavigate, Link } from "react-router-dom"; 
 
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../../context/authContext";
+import styles from "./LoginPage.module.css"; 
 
 const LoginPage = () => {
     const navigate = useNavigate(); 
@@ -34,7 +35,7 @@ const LoginPage = () => {
     }; 
 
    return (
-    <main>
+    <main className={styles.LoginPage}>
         <h1>Login</h1>
 
         <form onSubmit={handleSubmit}>
