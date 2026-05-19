@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./RegisterPage.module.css"; 
+// import styles from "./RegisterPage.module.css"; 
 
-import apiClient from "../api/client";
+import apiClient from "../../api/client";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
