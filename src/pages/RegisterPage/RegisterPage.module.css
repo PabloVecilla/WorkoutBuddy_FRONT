@@ -7,4 +7,24 @@
     color: white;
     min-height: 100vh;
     flex: 1;
+
+    & form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #222222;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    & p {
+        width: 300px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    & input, select {
+        width: 60%;
+    }
+
 }
