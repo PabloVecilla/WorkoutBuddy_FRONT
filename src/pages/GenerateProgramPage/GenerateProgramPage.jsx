@@ -71,6 +71,7 @@ const GenerateProgramPage = () => {
                         <p><label htmlFor="name">Name: </label>
                         <input type="text" 
                                 name="name"
+                                id="name"
                                 placeholder="Workout Program name"
                                 value={formData.name}
                                 onChange={handleChange}
@@ -82,6 +83,7 @@ const GenerateProgramPage = () => {
                             <label htmlFor="goal">Goal: </label>
                             <select
                                     name="goal"
+                                    id="goal"
                                     value={formData.goal}
                                     onChange={handleChange}
                             >
@@ -97,6 +99,7 @@ const GenerateProgramPage = () => {
                             <label htmlFor="level">Level: </label>
                         <select
                                 name="level"
+                                id="level"
                                 value={formData.level}
                                 onChange={handleChange}
                         >
@@ -110,6 +113,7 @@ const GenerateProgramPage = () => {
                             <label htmlFor="frequency">Frequency: </label>
                         <select
                             name="frequency"
+                            id="frequency"
                             value={formData.frequency}
                             onChange={handleChange}
                             disabled={!formData.level}

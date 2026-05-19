@@ -39,29 +39,41 @@ const RegisterPage = () => {
       <h1>Create account</h1>
 
       <form onSubmit={handleSubmit}>
-        <input
+        <p>
+          <label htmlFor="name">Name: </label>
+          <input
           type="text"
           name="name"
+          id="name"
           placeholder="Name"
           value={formData.name}
           onChange={handleChange}
         />
-
-        <input
+        </p>
+        
+        <p>
+          <label htmlFor="mail">Email: </label>
+          <input
           type="email"
           name="mail"
+          id="mail"
           placeholder="Email"
           value={formData.mail}
           onChange={handleChange}
         />
-
-        <input
+        </p>
+        
+        <p>
+          <label htmlFor="pass">Password: </label>
+          <input
           type="password"
           name="pass"
+          id="pass"
           placeholder="Password"
           value={formData.pass}
           onChange={handleChange}
         />
+        </p>
 
         <button type="submit">Register</button>
       </form>

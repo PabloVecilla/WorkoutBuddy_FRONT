@@ -43,6 +43,7 @@ const LoginPage = () => {
                 <label htmlFor="mail">Email: </label>
                 <input type="email"
                     name="mail"
+                    id="mail"
                     placeholder="Email"
                     value={formData.mail}
                     onChange={handleChange} 
@@ -54,6 +55,7 @@ const LoginPage = () => {
                 <label htmlFor="pass">Password: </label>
                 <input type="password"
                     name="pass"
+                    id="pass"
                     placeholder="Password"
                     value={formData.pass} 
                     onChange={handleChange}
