@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
         try {
             const response = await apiClient.post("/auth/login", credentials); 
 
-            setUser(response.data.user); 
+            setUser(response.data); 
 
             return response; 
 

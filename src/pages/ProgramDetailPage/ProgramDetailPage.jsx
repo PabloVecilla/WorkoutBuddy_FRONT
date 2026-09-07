@@ -21,7 +21,7 @@ const ProgramDetailPage = () => {
         const getProgramById = async () => {
             try {
                 const response = await apiClient.get(`/programs/${id}`); 
-                setProgram(response.data.program);  
+                setProgram(response.data.data);  
 
             } catch (err) {
                 setError(err.response?.data?.message || "Error loading Program")
@@ -48,7 +48,7 @@ const ProgramDetailPage = () => {
     console.log(program); 
 
     return (
-        <main className={styles.dashboardPage}>
+        <main className={styles.programDetailPage}>
             <h1>Program: {program.name}</h1>
             <div className={styles.cardsContainer}>
                 {
@@ -59,10 +59,10 @@ const ProgramDetailPage = () => {
                                     <h2><b>{day.dayNumber} {day.focus}</b></h2>
                                 </header>
                                 <div>
-                                    {day.Exercises?.map((exercise) => (
-                                        <div key={exercise.id}>
-                                            <p>{exercise.name}</p>
-                                            <p>{exercise.sets} sets x{exercise.reps} reps</p>
+                                    {day.workoutExercises?.map((workoutExercise) => (
+                                        <div key={workoutExercise.exercise.id}>
+                                            <p className="name">{workoutExercise.exercise.name}</p>
+                                            <p>{workoutExercise.sets} sets x {workoutExercise.reps} reps</p>
                                         </div>
                                     ))}
                                 </div>
