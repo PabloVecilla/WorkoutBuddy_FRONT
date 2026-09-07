@@ -65,7 +65,7 @@ const WorkoutDetailPage = () => {
                                         <div key={workoutExercise.exercise.id}>
                                             <p className="name">{workoutExercise.exercise.name}</p>
                                             <p>{workoutExercise.sets} sets x {workoutExercise.reps} reps</p>
-                                        </div>
+                                        </div> 
                                     ))}
                                 </div> */}
                             </article>
