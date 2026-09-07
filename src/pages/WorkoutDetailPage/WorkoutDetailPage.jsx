@@ -6,30 +6,30 @@ import { AuthContext } from "../../context/authContext";
 
 import apiClient from "../../api/client";
 
-import styles from "./ProgramDetailPage.module.css"
+import styles from "./WorkoutDetailPage.module.css"
 
-const ProgramDetailPage = () => {
+const WorkoutDetailPage = () => {
     const navigate = useNavigate(); 
     const { loading, logout } = useContext(AuthContext); 
 
-    const { id } = useParams(); 
+    const { programId, workoutId } = useParams(); 
 
-    const [ program, setProgram ] = useState(null); 
+    const [ workout, setWorkout ] = useState(null); 
     const [ error, setError ] = useState(""); 
 
     useEffect (() => {
-        const getProgramById = async () => {
+        const getWorkoutExercisesInProgramById = async () => {
             try {
-                const response = await apiClient.get(`/programs/${id}`); 
-                setProgram(response.data.data);  
+                const response = await apiClient.get(`/programs/${programId}/workouts/${workoutId}/workout-exercises`); 
+                setWorkout(response.data);  
 
             } catch (err) {
                 setError(err.response?.data?.message || "Error loading Program")
             }
         }; 
-        getProgramById(); 
+        getWorkoutExercisesInProgramById(); 
         
-    }, [id])
+    }, [workoutId])
 
     const handleLogout = async() => {
         try {
@@ -44,19 +44,21 @@ const ProgramDetailPage = () => {
 
     if (error) return <p>{error}</p>
 
-    if (!program) return <p>Fetching program details...</p>; 
-    console.log(program); 
+    if (!workout) return <p>Fetching workout details...</p>; 
+    console.log("WORKOUT OBJECT: ", workout); 
 
     return (
-        <main className={styles.programDetailPage}>
-            <h1>Program: {program.name}</h1>
+        <main className={styles.workoutDetailPage}>
+            <h1>Workout: {}</h1>
             <div className={styles.cardsContainer}>
                 {
-                    program?.Workouts?.map((day) => (
-                            <Link to={`workout/${day.id}`}><article className="card"
-                                        key={day.id}>
+                    workout.data?.map((workoutExercise) => (
+                            <article className="card"
+                                        key={workoutExercise.id}>
                                 <header>
-                                    <h2><b>{day.dayNumber} {day.focus}</b></h2>
+                                    <h2><b>{workoutExercise.exercise.name}</b></h2>
+                                    <p>Sets: {workoutExercise.sets}</p>
+                                    <p>Reps: {workoutExercise.reps}</p>
                                 </header>
                                 {/* <div>
                                     {day.workoutExercises?.map((workoutExercise) => (
@@ -66,7 +68,7 @@ const ProgramDetailPage = () => {
                                         </div>
                                     ))}
                                 </div> */}
-                            </article></Link>
+                            </article>
                         )
                     )}
             </div>
@@ -77,4 +79,4 @@ const ProgramDetailPage = () => {
     );
 };
 
-export default ProgramDetailPage; 
+export default WorkoutDetailPage; 

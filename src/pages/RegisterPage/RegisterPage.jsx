@@ -30,7 +30,7 @@ const RegisterPage = () => {
       await apiClient.post("/auth/register", formData);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Register failed");
+      setError(err.response?.data?.error?.message || "Register failed");
     }
   };
 

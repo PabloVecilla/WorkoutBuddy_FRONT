@@ -52,14 +52,14 @@ const GenerateProgramPage = () => {
         try {
             const payload = {...formData, frequency: Number(formData.frequency)}; 
 
-            const response = await apiClient.post("/programs/generate", payload); 
+            const response = await apiClient.post("/programs/create", payload); 
 
-            const addedProgram = response.data.data; 
+            const addedProgram = response.data; 
             
             navigate(`/programs/${addedProgram.id}`); 
 
         } catch (err) {
-            setError(err.message || "Error generating Program"); 
+            setError(err.response?.data?.error?.message || "Error generating Program"); 
         }
     }; 
 
@@ -87,7 +87,7 @@ const GenerateProgramPage = () => {
                                     value={formData.goal}
                                     onChange={handleChange}
                             >
-                            <option value="">Select your current Goal</option>
+                            <option value="">Select your main Goal</option>
                             <option value="muscle_gain">Muscle Gain</option>
                             <option value="fat_loss">Fat Loss</option>
                             <option value="strength">Strength</option>

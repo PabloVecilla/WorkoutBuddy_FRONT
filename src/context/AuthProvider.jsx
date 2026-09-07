@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
         try {
             const response = await apiClient.get("/auth/me"); 
             
-            setUser(response.data.user); 
+            setUser(response.data); 
             setError(""); 
 
         } catch (err) {
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
             setUser(null); 
 
         } catch (err) {
-            const message = err.response?.data?.message || "Logout failed"; 
+            const message = err.response?.data?.error?.message || "Logout failed"; 
             setError( message ); 
             throw new Error(message); 
         }

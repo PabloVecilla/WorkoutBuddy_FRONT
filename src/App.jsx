@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import ProtectedRoute from './routes/ProtectedRoute';
 import GenerateProgramPage from './pages/GenerateProgramPage/GenerateProgramPage';
 import ProgramDetailPage from './pages/ProgramDetailPage/ProgramDetailPage';
+import WorkoutDetailPage from './pages/WorkoutDetailPage/WorkoutDetailPage'; 
 
 function App() {
   return (
@@ -29,6 +30,11 @@ function App() {
          <Route path='/programs/:id' element= {
           <ProtectedRoute>
             <ProgramDetailPage />
+          </ProtectedRoute>
+         } />
+        <Route path='/programs/:programId/workout/:workoutId' element= {
+          <ProtectedRoute>
+            <WorkoutDetailPage />
           </ProtectedRoute>
          } />
       </ Routes>

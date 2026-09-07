@@ -28,7 +28,7 @@ const LoginPage = () => {
       await login(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Login failed');
+      setError(err.response?.data?.error?.message || 'Login failed');
     }
   };
 
