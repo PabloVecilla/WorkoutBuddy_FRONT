@@ -50,11 +50,11 @@ const GenerateProgramPage = () => {
         setError(""); 
 
         try {
-            const payload = {...formData, frquency: Number(formData.frequency)}; 
+            const payload = {...formData, frequency: Number(formData.frequency)}; 
 
             const response = await apiClient.post("/programs/generate", payload); 
 
-            const addedProgram = response.data.addedProgram; 
+            const addedProgram = response.data.data; 
             
             navigate(`/programs/${addedProgram.id}`); 
 

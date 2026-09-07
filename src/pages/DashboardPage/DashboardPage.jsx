@@ -26,7 +26,8 @@ const DashboardPage = () => {
             try {
                 const response = await apiClient.get("/programs/"); 
                 console.log("Full axios response: ", response); 
-                const programs = response.data; 
+                const programs = response.data.data; 
+                console.log("PROGRAMS: ", programs); 
                 setPrograms(programs || []); 
     
             } catch (err) {
@@ -48,7 +49,7 @@ const DashboardPage = () => {
         <main className={styles.dashboardPage}>
             <h1>Dasboard</h1>
                 
-                <h2>{user?.name}'s Programs</h2>
+                <h2>{user?.data.data.name}'s Programs</h2>
                 <div className={styles.cardsContainer}>
                     {programs.map(program => (
                         <Link to ={`/programs/${program.id}`}

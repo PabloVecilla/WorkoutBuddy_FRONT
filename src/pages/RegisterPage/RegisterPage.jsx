@@ -9,8 +9,8 @@ const RegisterPage = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    mail: "",
-    pass: "",
+    email: "",
+    password: "",
   });
 
   const [error, setError] = useState("");
@@ -55,22 +55,22 @@ const RegisterPage = () => {
           <label htmlFor="mail">Email: </label>
           <input
           type="email"
-          name="mail"
-          id="mail"
+          name="email"
+          id="email"
           placeholder="Email"
-          value={formData.mail}
+          value={formData.email}
           onChange={handleChange}
         />
         </p>
         
         <p>
-          <label htmlFor="pass">Password: </label>
+          <label htmlFor="password">Password: </label>
           <input
           type="password"
-          name="pass"
-          id="pass"
+          name="password"
+          id="password"
           placeholder="Password"
-          value={formData.pass}
+          value={formData.password}
           onChange={handleChange}
         />
         </p>
