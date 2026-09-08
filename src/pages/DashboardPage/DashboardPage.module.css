@@ -23,12 +23,21 @@
         color: whitesmoke;
     }
 
-    & article {
+    & article, button {
         padding: 8px;
         background-color: #222222;
         border-radius: 10px;
         width: 300px;
+        color: whitesmoke;
+    }
 
+    & button.generateProgram {
+        font-size: large;
+        font-weight: 900;
+    }
+
+    & button.deleteProgram {
+        margin-top: 5px;
     }
 
     & header {

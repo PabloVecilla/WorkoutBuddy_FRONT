@@ -25,7 +25,6 @@ const DashboardPage = () => {
         const getPrograms = async () => {
             try {
                 const response = await apiClient.get("/programs/"); 
-                console.log("Full axios response: ", response); 
                 const programs = response.data.data; 
                 console.log("PROGRAMS: ", programs); 
                 setPrograms(programs || []); 
@@ -43,18 +42,30 @@ const DashboardPage = () => {
         navigate("/generate")
     }; 
 
+    const handleDeleteProgram = async (programId) => { 
+        
+        const confirmDelete = window.confirm("Deleiton will eliminate your Program and all program data. Sure to proceed?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await apiClient.delete(`/programs/${programId}`); 
+
+            setPrograms(prev => prev.filter(p => p.id !== programId));
+        } catch (error) {
+            setError(err.response?.data?.error?.message || "Error deleting Program"); 
+        }
+    }; 
+
     if (loading) return <p>loading...</p>; 
 
     return (
         <main className={styles.dashboardPage}>
-            <h1>Dasboard</h1>
-                
-                <h2>{user?.data.name}'s Programs</h2>
+            <h1>{user?.data.name}'s Programs</h1>
                 <div className={styles.cardsContainer}>
                     {programs.map(program => (
-                        <Link to ={`/programs/${program.id}`}
-                                className={styles.link}>
                             <article key={program.id}>
+                                <Link to ={`/programs/${program.id}`}
+                                className={styles.link}>
                                 <header>{program.name}</header>
                                 <ul>
                                     <li key={`${program.id}-goal`}>
@@ -70,11 +81,12 @@ const DashboardPage = () => {
                                         <span className={styles.cardLiText}>{program.frequency}</span>
                                     </li>
                                 </ul>
+                                </Link>
+                                <button onClick={() => handleDeleteProgram(program.id)} className={styles.deleteProgram}>Delete program</button>
                             </article>
-                        </Link>
                     ))}
                 </div>
-                <button onClick={handleGenerateProgram}>Generate Program</button>
+                <button onClick={handleGenerateProgram} className={styles.generateProgram}>Generate Program</button>
 
             <button onClick={handleLogout}>Logout</button>
         </main>

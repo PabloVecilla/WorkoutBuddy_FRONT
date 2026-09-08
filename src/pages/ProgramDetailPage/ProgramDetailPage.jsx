@@ -45,7 +45,6 @@ const ProgramDetailPage = () => {
     if (error) return <p>{error}</p>
 
     if (!program) return <p>Fetching program details...</p>; 
-    console.log(program); 
 
     return (
         <main className={styles.programDetailPage}>
