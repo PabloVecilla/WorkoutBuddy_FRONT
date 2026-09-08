@@ -56,7 +56,7 @@ const GenerateProgramPage = () => {
 
             const addedProgram = response.data; 
             
-            navigate(`/programs/${addedProgram.id}`); 
+            navigate(`/programs/${addedProgram.data.id}`); 
 
         } catch (err) {
             setError(err.response?.data?.error?.message || "Error generating Program"); 
@@ -66,20 +66,20 @@ const GenerateProgramPage = () => {
     return (
         <main className={styles.generateProgramMain}>
             <h1>Program Generator</h1>
-                    <h2>Welcome, {user.name}</h2>
+                    <h2>Welcome, {user.data.name}</h2>
                     <form onSubmit={handleSubmit}>
-                        <p><label htmlFor="name">Name: </label>
+                        <article><label htmlFor="name">Name: </label>
                         <input type="text" 
                                 name="name"
                                 id="name"
-                                placeholder="Workout Program name"
+                                placeholder="Program name"
                                 value={formData.name}
                                 onChange={handleChange}
                                 ref={inputRef}
                         />
-                        </p>
+                        </article>
 
-                        <p>
+                        <article>
                             <label htmlFor="goal">Goal: </label>
                             <select
                                     name="goal"
@@ -87,45 +87,45 @@ const GenerateProgramPage = () => {
                                     value={formData.goal}
                                     onChange={handleChange}
                             >
-                            <option value="">Select your main Goal</option>
-                            <option value="muscle_gain">Muscle Gain</option>
-                            <option value="fat_loss">Fat Loss</option>
-                            <option value="strength">Strength</option>
-                            <option value="recomp">Recomposition</option>
-                        </select>
-                        </ p>
+                                <option value="">Select your main Goal</option>
+                                <option value="muscle_gain">Muscle Gain</option>
+                                <option value="fat_loss">Fat Loss</option>
+                                <option value="strength">Strength</option>
+                                <option value="recomp">Recomposition</option>
+                            </select>
+                        </article>
 
-                        <p>
+                        <article>
                             <label htmlFor="level">Level: </label>
-                        <select
-                                name="level"
-                                id="level"
-                                value={formData.level}
-                                onChange={handleChange}
-                        >
-                            <option value="">Select your current Level</option>
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                        </select>
-                        </ p>
+                            <select
+                                    name="level"
+                                    id="level"
+                                    value={formData.level}
+                                    onChange={handleChange}
+                            >
+                                <option value="">Current Level</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                            </select>
+                        </ article>
 
-                        <p>
+                        <article>
                             <label htmlFor="frequency">Frequency: </label>
-                        <select
-                            name="frequency"
-                            id="frequency"
-                            value={formData.frequency}
-                            onChange={handleChange}
-                            disabled={!formData.level}
-                        >
-                            <option value="">Select frequency</option>
-                            {(frequencyOptions[formData.level] || []).map((frequency) =>
-                            (<option key={frequency} value={frequency}>
-                                {frequency} days/week
-                            </option>)
-                            )}
-                        </select>
-                        </ p>
+                            <select
+                                name="frequency"
+                                id="frequency"
+                                value={formData.frequency}
+                                onChange={handleChange}
+                                disabled={!formData.level}
+                            >
+                                <option value="">Select frequency</option>
+                                {(frequencyOptions[formData.level] || []).map((frequency) =>
+                                (<option key={frequency} value={frequency}>
+                                    {frequency} days/week
+                                </option>)
+                                )}
+                            </select>
+                        </article>
 
                         <button type="submit">Submit</button>
                     </form>
