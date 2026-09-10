@@ -11,20 +11,47 @@
     & form {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 20px;
-        background-color: #222222;
         padding: 10px;
-        border-radius: 10px;
     }
-    & p {
+
+    & article {
+        padding: 12px;
+        background-color: #222222;
+        border-radius: 10px;
         width: 300px;
+        color: whitesmoke;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
+
+    }
+    article label {
+        font-weight: 900;
+        font-size: large;
     }
 
     & input, select {
         width: 60%;
+        padding: 5px;
+        border-radius: 10px;
+        font-size: 1.25rem;
+        background-color: black;
+        color: white;
+    }
+    & button {
+        padding: 12px;
+        background-color: #222222;
+        border-radius: 10px;
+        width: 300px;
+        color: whitesmoke;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.25rem;
     }
 
 }
