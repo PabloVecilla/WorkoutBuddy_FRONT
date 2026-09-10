@@ -6,9 +6,11 @@ import styles from "./GenerateProgramPage.module.css"
 
 import apiClient from "../../api/client";
 
+import MainLayout from "../../layouts/MainLayout/MainLayout"; 
+
 const GenerateProgramPage = () => {
     const navigate = useNavigate(); 
-    const { user, loading, logout } = useContext(AuthContext); 
+    const { user, loading } = useContext(AuthContext); 
 
     const [ formData, setFormData ] = useState({ name: "", goal: "", level: "", frequency: "" }); 
 
@@ -25,15 +27,6 @@ const GenerateProgramPage = () => {
         inputRef?.current?.focus(); 
 
     }, [loading]); 
-
-    const handleLogout = async() => {
-        try {
-            await logout(); 
-            navigate("/"); 
-        }  catch (err) {
-            console.error(err); 
-        }
-    }; 
 
     if (loading) return <p>loading...</p>; 
 
@@ -64,73 +57,74 @@ const GenerateProgramPage = () => {
     }; 
 
     return (
+        <MainLayout>
         <main className={styles.generateProgramMain}>
             <h1>Program Generator</h1>
-                    <h2>Welcome, {user.data.name}</h2>
-                    <form onSubmit={handleSubmit}>
-                        <article><label htmlFor="name">Name: </label>
-                        <input type="text" 
-                                name="name"
-                                id="name"
-                                placeholder="Program name"
-                                value={formData.name}
+                <h2>Welcome, {user.data.name}</h2>
+                <form onSubmit={handleSubmit}>
+                    <article><label htmlFor="name">Name: </label>
+                    <input type="text" 
+                            name="name"
+                            id="name"
+                            placeholder="Program name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            ref={inputRef}
+                    />
+                    </article>
+
+                    <article>
+                        <label htmlFor="goal">Goal: </label>
+                        <select
+                                name="goal"
+                                id="goal"
+                                value={formData.goal}
                                 onChange={handleChange}
-                                ref={inputRef}
-                        />
-                        </article>
+                        >
+                            <option value="">Select your main Goal</option>
+                            <option value="muscle_gain">Muscle Gain</option>
+                            <option value="fat_loss">Fat Loss</option>
+                            <option value="strength">Strength</option>
+                            <option value="recomp">Recomposition</option>
+                        </select>
+                    </article>
 
-                        <article>
-                            <label htmlFor="goal">Goal: </label>
-                            <select
-                                    name="goal"
-                                    id="goal"
-                                    value={formData.goal}
-                                    onChange={handleChange}
-                            >
-                                <option value="">Select your main Goal</option>
-                                <option value="muscle_gain">Muscle Gain</option>
-                                <option value="fat_loss">Fat Loss</option>
-                                <option value="strength">Strength</option>
-                                <option value="recomp">Recomposition</option>
-                            </select>
-                        </article>
-
-                        <article>
-                            <label htmlFor="level">Level: </label>
-                            <select
-                                    name="level"
-                                    id="level"
-                                    value={formData.level}
-                                    onChange={handleChange}
-                            >
-                                <option value="">Current Level</option>
-                                <option value="beginner">Beginner</option>
-                                <option value="intermediate">Intermediate</option>
-                            </select>
-                        </ article>
-
-                        <article>
-                            <label htmlFor="frequency">Frequency: </label>
-                            <select
-                                name="frequency"
-                                id="frequency"
-                                value={formData.frequency}
+                    <article>
+                        <label htmlFor="level">Level: </label>
+                        <select
+                                name="level"
+                                id="level"
+                                value={formData.level}
                                 onChange={handleChange}
-                                disabled={!formData.level}
-                            >
-                                <option value="">Select frequency</option>
-                                {(frequencyOptions[formData.level] || []).map((frequency) =>
-                                (<option key={frequency} value={frequency}>
-                                    {frequency} days/week
-                                </option>)
-                                )}
-                            </select>
-                        </article>
+                        >
+                            <option value="">Current Level</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                        </select>
+                    </ article>
 
-                        <button type="submit">Submit</button>
-                    </form>
-                    <button onClick={handleLogout}>Logout</button>
+                    <article>
+                        <label htmlFor="frequency">Frequency: </label>
+                        <select
+                            name="frequency"
+                            id="frequency"
+                            value={formData.frequency}
+                            onChange={handleChange}
+                            disabled={!formData.level}
+                        >
+                            <option value="">Select frequency</option>
+                            {(frequencyOptions[formData.level] || []).map((frequency) =>
+                            (<option key={frequency} value={frequency}>
+                                {frequency} days/week
+                            </option>)
+                            )}
+                        </select>
+                    </article>
+
+                    <button type="submit">Submit</button>
+                </form>
         </main>
+        </MainLayout>
     );
 };
 

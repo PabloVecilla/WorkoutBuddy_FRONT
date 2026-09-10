@@ -32,6 +32,7 @@ function App() {
             <ProgramDetailPage />
           </ProtectedRoute>
          } />
+         
         <Route path='/programs/:programId/workout/:workoutId' element= {
           <ProtectedRoute>
             <WorkoutDetailPage />

@@ -4,22 +4,15 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import apiClient from "../../api/client";
 
+import MainLayout from "../../layouts/MainLayout/MainLayout"; 
+
 import styles from "./DashboardPage.module.css"
  
 
 const DashboardPage = () => {
     const navigate = useNavigate(); 
-    const { user, loading, logout } = useContext(AuthContext); 
+    const { user, loading } = useContext(AuthContext); 
     const [ programs, setPrograms ] = useState([]);
-
-    const handleLogout = async() => {
-        try {
-            await logout(); 
-            navigate("/"); 
-        }  catch (err) {
-            console.error(err); 
-        }
-    }; 
 
     useEffect(() => {
         const getPrograms = async () => {
@@ -30,7 +23,7 @@ const DashboardPage = () => {
                 setPrograms(programs || []); 
     
             } catch (err) {
-                console.error(err); 
+                setError(err.response?.data?.error?.message || "Program not found");  
             }
         }
         getPrograms(); 
@@ -59,6 +52,7 @@ const DashboardPage = () => {
     if (loading) return <p>loading...</p>; 
 
     return (
+        <MainLayout>
         <main className={styles.dashboardPage}>
             <h1>{user?.data.name}'s Programs</h1>
                 <div className={styles.cardsContainer}>
@@ -87,9 +81,8 @@ const DashboardPage = () => {
                     ))}
                 </div>
                 <button onClick={handleGenerateProgram} className={styles.generateProgram}>Generate Program</button>
-
-            <button onClick={handleLogout}>Logout</button>
         </main>
+        </MainLayout>
     );
 };
 

@@ -6,11 +6,13 @@ import { AuthContext } from "../../context/authContext";
 
 import apiClient from "../../api/client";
 
+import MainLayout from "../../layouts/MainLayout/MainLayout"; 
+
 import styles from "./ProgramDetailPage.module.css"
 
 const ProgramDetailPage = () => {
     const navigate = useNavigate(); 
-    const { loading, logout } = useContext(AuthContext); 
+    const { loading } = useContext(AuthContext); 
 
     const { id } = useParams(); 
 
@@ -31,15 +33,6 @@ const ProgramDetailPage = () => {
         
     }, [id])
 
-    const handleLogout = async() => {
-        try {
-            await logout(); 
-            navigate("/"); 
-        }  catch (err) {
-            console.error(err); 
-        }
-    }; 
-
     if (loading) return <p>loading...</p>; 
 
     if (error) return <p>{error}</p>
@@ -47,12 +40,13 @@ const ProgramDetailPage = () => {
     if (!program) return <p>Fetching program details...</p>; 
 
     return (
+        <MainLayout>
         <main className={styles.programDetailPage}>
             <h1>Program: {program.name}</h1>
             <div className={styles.cardsContainer}>
                 {
                     program?.Workouts?.map((day) => (
-                            <Link to={`workout/${day.id}`}><article className="card"
+                            <Link to={`workout/${day.id}`} className={styles.link}><article className="card"
                                         key={day.id}>
                                 <header>
                                     <h2><b>{day.dayNumber} {day.focus}</b></h2>
@@ -65,14 +59,14 @@ const ProgramDetailPage = () => {
                                         </div>
                                     ))}
                                 </div> */}
-                            </article></Link>
+                            </article>
+                            <p className={styles.weightSymbol}>||-||</p>
+                            </Link>
                         )
                     )}
             </div>
-            <Link to={"/dashboard/"} >Back to dashboard</Link>
-
-            <button onClick={handleLogout}>Logout</button>
         </main>
+        </MainLayout>
     );
 };
 

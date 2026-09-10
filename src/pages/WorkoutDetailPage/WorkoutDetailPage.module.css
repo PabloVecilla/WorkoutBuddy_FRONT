@@ -11,11 +11,24 @@
     & h1, h2 {
         color: whitesmoke
     }
-
-    & .cardsContainer {
+    & .contentWrapper {
+        margin: auto;
         display: flex;
         flex-direction: column;
         gap: 20px;
+        align-items: center;
+    }
+    & section.exerciseContainer {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    & section.formSection {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     & .link {
@@ -28,7 +41,7 @@
         background-color: #222222;
         border-radius: 10px;
         width: 300px;
-
+        margin-bottom: 10px;
     }
 
     & header {
@@ -52,5 +65,38 @@
     & p.name {
         font-size: 1.1rem;
         font-weight: 900;
+    }
+    & p.weightSymbol {
+        text-align: center;
+
+    }
+    & input, select {
+        width: 20%;
+        padding: 5px;
+        border-radius: 10px;
+        font-size: 1.25rem;
+        background-color: black;
+        color: white;
+    }
+    & button {
+        padding: 8px;
+        background-color: #222222;
+        border-radius: 10px;
+        width: 100px;
+        color: whitesmoke;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.25rem;
+    }
+    & button.send {
+        margin-top: 12px;
+    }
+    & form {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

@@ -39,7 +39,7 @@ const RegisterPage = () => {
       <h1>Create account</h1>
 
       <form onSubmit={handleSubmit}>
-        <p>
+        <article>
           <label htmlFor="name">Name: </label>
           <input
           type="text"
@@ -49,9 +49,9 @@ const RegisterPage = () => {
           value={formData.name}
           onChange={handleChange}
         />
-        </p>
+        </article>
         
-        <p>
+        <article>
           <label htmlFor="mail">Email: </label>
           <input
           type="email"
@@ -61,9 +61,9 @@ const RegisterPage = () => {
           value={formData.email}
           onChange={handleChange}
         />
-        </p>
+        </article>
         
-        <p>
+        <article>
           <label htmlFor="password">Password: </label>
           <input
           type="password"
@@ -73,7 +73,7 @@ const RegisterPage = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        </p>
+        </article>
 
         <button type="submit">Register</button>
       </form>

@@ -36,7 +36,7 @@ const LoginPage = () => {
     <main className={styles.LoginPage}>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <p>
+        <article>
           <label htmlFor="email">Email: </label>
           <input
             type="email"
@@ -47,8 +47,8 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
-        </p>
-        <p>
+        </article>
+        <article>
           <label htmlFor="password">Password: </label>
           <input
             type="password"
@@ -59,7 +59,7 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
-        </p>
+        </article>
         <button type="submit">Login</button>
       </form>
       

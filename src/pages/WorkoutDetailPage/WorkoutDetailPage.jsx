@@ -8,13 +8,18 @@ import apiClient from "../../api/client";
 
 import styles from "./WorkoutDetailPage.module.css"
 
+import MainLayout from "../../layouts/MainLayout/MainLayout"; 
+
 const WorkoutDetailPage = () => {
     const navigate = useNavigate(); 
-    const { loading, logout } = useContext(AuthContext); 
+    const { loading } = useContext(AuthContext); 
 
     const { programId, workoutId } = useParams(); 
 
     const [ workout, setWorkout ] = useState(null); 
+
+    const [ formData, setFormData ] = useState({ weight: 0, sets: 0, reps: 0 }); 
+
     const [ error, setError ] = useState(""); 
 
     useEffect (() => {
@@ -31,15 +36,6 @@ const WorkoutDetailPage = () => {
         
     }, [workoutId])
 
-    const handleLogout = async() => {
-        try {
-            await logout(); 
-            navigate("/"); 
-        }  catch (err) {
-            console.error(err); 
-        }
-    }; 
-
     if (loading) return <p>loading...</p>; 
 
     if (error) return <p>{error}</p>
@@ -48,34 +44,51 @@ const WorkoutDetailPage = () => {
     console.log("WORKOUT OBJECT: ", workout); 
 
     return (
+        <MainLayout>
         <main className={styles.workoutDetailPage}>
             <h1>Workout: {}</h1>
-            <div className={styles.cardsContainer}>
-                {
-                    workout.data?.map((workoutExercise) => (
-                            <article className="card"
-                                        key={workoutExercise.id}>
-                                <header>
-                                    <h2><b>{workoutExercise.exercise.name}</b></h2>
-                                    <p>Sets: {workoutExercise.sets}</p>
-                                    <p>Reps: {workoutExercise.reps}</p>
-                                </header>
-                                {/* <div>
-                                    {day.workoutExercises?.map((workoutExercise) => (
-                                        <div key={workoutExercise.exercise.id}>
-                                            <p className="name">{workoutExercise.exercise.name}</p>
-                                            <p>{workoutExercise.sets} sets x {workoutExercise.reps} reps</p>
-                                        </div> 
-                                    ))}
-                                </div> */}
-                            </article>
-                        )
-                    )}
-            </div>
-            <Link to={"/dashboard/"} >Back to dashboard</Link>
+            <div className={styles.contentWrapper}>
+                { workout.data?.map((workoutExercise) => (
+                    <section className={styles.exerciseContainer}
+                                key={workoutExercise.id}>
 
-            <button onClick={handleLogout}>Logout</button>
+                        <h2><b>{workoutExercise.exercise.name}</b></h2>
+                        <button>Edit</button>
+                        
+                        {Array.from({ length: workoutExercise.sets }).map((_, index) => (
+                            <article key={index} className={styles.exerciseCard}>
+                                <h3>Set {index + 1}</h3>
+
+                                <footer className={styles.weightReps}>
+                                    <form action="">
+                                        <section className={styles.formSection}>
+                                        <label htmlFor="weight-kg">Weight:</label>
+                                        <input 
+                                            type="number" 
+                                            step="0.01" 
+                                            inputmode="decimal"
+                                            id="weight-kg" 
+                                            placeholder={ workoutExercise.weightKg ? workoutExercise.weightKg : "0.00" }
+                                            onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
+                                        <label htmlFor="reps">Reps: </label>
+                                        <input 
+                                            type="number" 
+                                            id="precio" 
+                                            placeholder={ workoutExercise.reps ? workoutExercise.reps : "0" }
+                                            onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
+                                        </section>
+                                        <button onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
+                                    </form>
+                                    
+                                </footer>
+                            </article>
+                        ))}
+                        <p className={styles.weightSymbol}>||-||</p>
+                    </section>
+                ))}
+            </div>
         </main>
+        </MainLayout>
     );
 };
 
