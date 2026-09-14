@@ -1,18 +1,19 @@
 import styles from "./Header.module.css";
 import { useNavigate, Link } from "react-router-dom"
-import { useContext, useEffect, useState } from "react"; 
+import { useContext } from "react"; 
 import { AuthContext } from "../../context/authContext";
 
 function Header() {
   const navigate = useNavigate(); 
-  const { user, loading, logout } = useContext(AuthContext); 
+  const { user, logout } = useContext(AuthContext); 
+  const [ error, setError ] = useState(""); 
 
   const handleLogout = async() => {
     try {
         await logout(); 
         navigate("/"); 
     }  catch (err) {
-        console.error(err); 
+        setError(err.response?.data?.error?.message || "Logout error"); 
     }
 }; 
 

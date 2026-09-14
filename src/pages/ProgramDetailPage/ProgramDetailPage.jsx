@@ -26,7 +26,7 @@ const ProgramDetailPage = () => {
                 setProgram(response.data.data);  
 
             } catch (err) {
-                setError(err.response?.data?.message || "Error loading Program")
+                setError(err.response?.data?.error?.message || "Error loading Program"); 
             }
         }; 
         getProgramById(); 
