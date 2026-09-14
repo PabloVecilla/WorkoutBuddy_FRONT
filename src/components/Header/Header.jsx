@@ -24,7 +24,7 @@ function Header() {
       </Link>
 
       <div className={styles.userSection}>
-        <span>{user ? user.data.name : "Profile"}</span>
+        <span>{user ? user.name : "Profile"}</span>
         <button onClick={handleLogout}>Logout</button>
       </div>
     </header>

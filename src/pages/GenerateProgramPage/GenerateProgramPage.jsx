@@ -60,7 +60,7 @@ const GenerateProgramPage = () => {
         <MainLayout>
         <main className={styles.generateProgramMain}>
             <h1>Program Generator</h1>
-                <h2>Welcome, {user.data.name}</h2>
+                <h2>Welcome, {user.name}</h2>
                 <form onSubmit={handleSubmit}>
                     <article><label htmlFor="name">Name: </label>
                     <input type="text" 
