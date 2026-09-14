@@ -1,45 +1,56 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState, useCallback, useRef } from "react"; 
 import { AuthContext } from "./authContext";
 import apiClient from "../api/client";
 
 export function AuthProvider({ children }) {
-    const [ user, setUser ] = useState(null); 
-    const [ error, setError ] = useState(""); 
-    const [ loading, setLoading ] = useState(true); 
+    const [user, setUser] = useState(null); 
+    const [error, setError] = useState(""); 
+    const [loading, setLoading] = useState(true); 
+    
+    // UseRef cancels req at dismount
+    const isMounted = useRef(true);
 
-    const fetchUser = async () => {
-
+    // 1. store fetchUser with useCallback to avoid changes on each render
+    const fetchUser = useCallback(async () => {
         try {
             const response = await apiClient.get("/auth/me"); 
             
-            setUser(response.data); 
-            setError(""); 
-
+            if (isMounted.current) {
+                setUser(response.data); 
+                setError(""); 
+            }
         } catch (err) {
-            setUser(null); 
+            if (isMounted.current) {
+                setError(err.response?.data?.error?.message || "Error getting User"); 
+                setUser(null); 
+            }
         } finally {
-            setLoading(false); 
+            if (isMounted.current) {
+                setLoading(false); 
+            }
         }
-    }; 
-    useEffect(() => {
-        fetchUser(); 
-    }, []); 
+    }, []); // Keeps function stable
 
-   
+    // 2. fetchUser at component mount
+    useEffect(() => {
+        isMounted.current = true;
+        fetchUser(); 
+
+        // cleaning
+        return () => {
+            isMounted.current = false;
+        };
+    }, [fetchUser]);
 
     const login = async (credentials) => {
         setError(""); 
-
         try {
             const response = await apiClient.post("/auth/login", credentials); 
-
             setUser(response.data.data); 
-
             return response; 
-
         } catch (err) {
             const message = err.response?.data?.message || "Login failed"; 
-            setError( message ); 
+            setError(message); 
             throw new Error(message); 
         }
     }; 
@@ -47,12 +58,10 @@ export function AuthProvider({ children }) {
     const logout = async () => {
         try {
             await apiClient.post("/auth/logout"); 
-
             setUser(null); 
-
         } catch (err) {
             const message = err.response?.data?.error?.message || "Logout failed"; 
-            setError( message ); 
+            setError(message); 
             throw new Error(message); 
         }
     }; 
@@ -66,10 +75,10 @@ export function AuthProvider({ children }) {
             setError,
             login,
             logout,
-            fetchUser
+            fetchUser // Al estar memorizada con useCallback, no romperá los componentes consumidores
           }}
         >
           {children}
         </AuthContext.Provider>
-      ); 
+    ); 
 }

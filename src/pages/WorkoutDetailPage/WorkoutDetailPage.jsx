@@ -29,7 +29,7 @@ const WorkoutDetailPage = () => {
                 setWorkout(response.data);  
 
             } catch (err) {
-                setError(err.response?.data?.message || "Error loading Program")
+                setError(err.response?.data?.error?.message || "Error loading Program")
             }
         }; 
         getWorkoutExercisesInProgramById(); 
@@ -41,7 +41,6 @@ const WorkoutDetailPage = () => {
     if (error) return <p>{error}</p>
 
     if (!workout) return <p>Fetching workout details...</p>; 
-    console.log("WORKOUT OBJECT: ", workout); 
 
     return (
         <MainLayout>
@@ -77,7 +76,7 @@ const WorkoutDetailPage = () => {
                                             placeholder={ workoutExercise.reps ? workoutExercise.reps : "0" }
                                             onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
                                         </section>
-                                        <button onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
+                                        <button disabled onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
                                     </form>
                                     
                                 </footer>

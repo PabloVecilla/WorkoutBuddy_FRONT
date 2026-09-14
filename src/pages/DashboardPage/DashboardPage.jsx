@@ -14,12 +14,13 @@ const DashboardPage = () => {
     const { user, loading } = useContext(AuthContext); 
     const [ programs, setPrograms ] = useState([]);
 
+    const [ error, setError ] = useState(""); 
+
     useEffect(() => {
         const getPrograms = async () => {
             try {
                 const response = await apiClient.get("/programs/"); 
                 const programs = response.data.data; 
-                console.log("PROGRAMS: ", programs); 
                 setPrograms(programs || []); 
     
             } catch (err) {
@@ -41,10 +42,10 @@ const DashboardPage = () => {
         if (!confirmDelete) return;
 
         try {
-            const response = await apiClient.delete(`/programs/${programId}`); 
+            await apiClient.delete(`/programs/${programId}`); 
 
             setPrograms(prev => prev.filter(p => p.id !== programId));
-        } catch (error) {
+        } catch (err) {
             setError(err.response?.data?.error?.message || "Error deleting Program"); 
         }
     }; 
