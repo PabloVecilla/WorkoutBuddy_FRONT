@@ -1,6 +1,6 @@
 import styles from "./Header.module.css";
 import { useNavigate, Link } from "react-router-dom"
-import { useContext } from "react"; 
+import { useContext, useState } from "react"; 
 import { AuthContext } from "../../context/authContext";
 
 function Header() {
@@ -10,6 +10,7 @@ function Header() {
 
   const handleLogout = async() => {
     try {
+      setError(""); 
         await logout(); 
         navigate("/"); 
     }  catch (err) {
@@ -26,6 +27,7 @@ function Header() {
 
       <div className={styles.userSection}>
         <span>{user ? user.name : "Profile"}</span>
+        { error && <p className={styles.errorMessage}>{error}</p> }
         <button onClick={handleLogout}>Logout</button>
       </div>
     </header>

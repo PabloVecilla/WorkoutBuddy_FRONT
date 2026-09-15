@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { AuthContext } from "../../context/authContext";
 
@@ -11,14 +11,13 @@ import styles from "./WorkoutDetailPage.module.css"
 import MainLayout from "../../layouts/MainLayout/MainLayout"; 
 
 const WorkoutDetailPage = () => {
-    const navigate = useNavigate(); 
     const { loading } = useContext(AuthContext); 
 
     const { programId, workoutId } = useParams(); 
 
     const [ workout, setWorkout ] = useState(null); 
 
-    const [ formData, setFormData ] = useState({ weight: 0, sets: 0, reps: 0 }); 
+    // const [ formData, setFormData ] = useState({ weight: 0, sets: 0, reps: 0 }); 
 
     const [ error, setError ] = useState(""); 
 
@@ -34,7 +33,7 @@ const WorkoutDetailPage = () => {
         }; 
         getWorkoutExercisesInProgramById(); 
         
-    }, [workoutId])
+    }, [programId, workoutId])
 
     if (loading) return <p>loading...</p>; 
 
@@ -76,7 +75,7 @@ const WorkoutDetailPage = () => {
                                             placeholder={ workoutExercise.reps ? workoutExercise.reps : "0" }
                                             onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
                                         </section>
-                                        <button disabled onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
+                                        <button /*</form>disabled onClick={() => handleSendExerciseData}*/ className={styles.send}>Done!</button>
                                     </form>
                                     
                                 </footer>

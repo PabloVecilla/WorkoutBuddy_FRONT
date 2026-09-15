@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { AuthContext } from "../../context/authContext";
 
@@ -11,7 +11,6 @@ import MainLayout from "../../layouts/MainLayout/MainLayout";
 import styles from "./ProgramDetailPage.module.css"
 
 const ProgramDetailPage = () => {
-    const navigate = useNavigate(); 
     const { loading } = useContext(AuthContext); 
 
     const { id } = useParams(); 

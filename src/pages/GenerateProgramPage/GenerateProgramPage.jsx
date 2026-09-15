@@ -122,6 +122,7 @@ const GenerateProgramPage = () => {
                     </article>
 
                     <button type="submit">Submit</button>
+                    {error && <p className={styles.errorMessage}>{error}</p>}
                 </form>
         </main>
         </MainLayout>

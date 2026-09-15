@@ -1,84 +1,86 @@
-import { useEffect, useState, useCallback, useRef } from "react"; 
+import { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
 import apiClient from "../api/client";
 
+const getApiErrorMessage = (err, fallback) =>
+  err.response?.data?.error?.message || fallback;
+
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null); 
-    const [error, setError] = useState(""); 
-    const [loading, setLoading] = useState(true); 
-    
-    // UseRef cancels req at dismount
-    const isMounted = useRef(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    // 1. store fetchUser with useCallback to avoid changes on each render
-    const fetchUser = useCallback(async () => {
-        try {
-            const response = await apiClient.get("/auth/me"); 
-            
-            if (isMounted.current) {
-                setUser(response.data); 
-                setError(""); 
-            }
-        } catch (err) {
-            if (isMounted.current) {
-                setError(err.response?.data?.error?.message || "Error getting User"); 
-                setUser(null); 
-            }
-        } finally {
-            if (isMounted.current) {
-                setLoading(false); 
-            }
+  useEffect(() => {
+    const controller = new AbortController();
+
+    apiClient
+      .get("/auth/me", {
+        signal: controller.signal,
+      })
+      .then((response) => {
+        if (controller.signal.aborted) return;
+
+        setUser(response.data.data);
+      })
+      .catch(() => {
+        if (controller.signal.aborted) return;
+
+        setUser(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
         }
-    }, []); // Keeps function stable
+      });
 
-    // 2. fetchUser at component mount
-    useEffect(() => {
-        isMounted.current = true;
-        fetchUser(); 
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
-        // cleaning
-        return () => {
-            isMounted.current = false;
-        };
-    }, [fetchUser]);
+  const login = async (credentials) => {
+    try {
+      const response = await apiClient.post(
+        "/auth/login",
+        credentials
+      );
 
-    const login = async (credentials) => {
-        setError(""); 
-        try {
-            const response = await apiClient.post("/auth/login", credentials); 
-            setUser(response.data.data); 
-            return response; 
-        } catch (err) {
-            const message = err.response?.data?.message || "Login failed"; 
-            setError(message); 
-            throw new Error(message); 
-        }
-    }; 
+      const authenticatedUser = response.data.data;
 
-    const logout = async () => {
-        try {
-            await apiClient.post("/auth/logout"); 
-            setUser(null); 
-        } catch (err) {
-            const message = err.response?.data?.error?.message || "Logout failed"; 
-            setError(message); 
-            throw new Error(message); 
-        }
-    }; 
+      setUser(authenticatedUser);
 
-    return (
-        <AuthContext.Provider
-          value={{
-            user,
-            error,
-            loading,
-            setError,
-            login,
-            logout,
-            fetchUser // Al estar memorizada con useCallback, no romperá los componentes consumidores
-          }}
-        >
-          {children}
-        </AuthContext.Provider>
-    ); 
+      return authenticatedUser;
+    } catch (err) {
+      const message = getApiErrorMessage(err, "Login failed");
+
+      throw new Error(message, {
+        cause: err,
+      });
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await apiClient.post("/auth/logout");
+      setUser(null);
+    } catch (err) {
+      const message = getApiErrorMessage(err, "Logout failed");
+
+      throw new Error(message, {
+        cause: err,
+      });
+    }
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
