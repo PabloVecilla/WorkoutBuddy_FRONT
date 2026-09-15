@@ -38,6 +38,15 @@ const ProgramDetailPage = () => {
 
     if (!program) return <p>Fetching program details...</p>; 
 
+    const formatDBInput = (text) => {
+        const withSpaces = text.replaceAll('_', ' '); 
+        return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+      }
+      
+      // Example usage:
+      console.log(formatDBInput("user_profile_settings")); // Output: "User profile settings"
+      
+
     return (
         <MainLayout>
         <main className={styles.programDetailPage}>
@@ -48,7 +57,7 @@ const ProgramDetailPage = () => {
                             <Link to={`workout/${day.id}`} className={styles.link}><article className="card"
                                         key={day.id}>
                                 <header>
-                                    <h2><b>{day.dayNumber} {day.focus}</b></h2>
+                                    <h2>Day <b>{day.dayNumber} -  {formatDBInput(day.focus)}</b></h2>
                                 </header>
                                 {/* <div>
                                     {day.workoutExercises?.map((workoutExercise) => (

@@ -56,7 +56,7 @@ const DashboardPage = () => {
     return (
         <MainLayout>
         <main className={styles.dashboardPage}>
-            <h1>{user?.data.name}'s Programs</h1>
+            <h1>{user?.name}'s Programs</h1>
                 <div className={styles.cardsContainer}>
                     {programs.map(program => (
                             <article key={program.id}>

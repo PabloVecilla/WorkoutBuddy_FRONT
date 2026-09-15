@@ -24,15 +24,18 @@
     }
 
     & article {
-        padding: 8px;
+        padding: 12px;
         background-color: #222222;
         border-radius: 10px;
         width: 300px;
+        align-items: center;
+        justify-content: center;
 
     }
 
     & header {
         font-weight: bolder;
+        text-align: center;
     }
 
     & ul {
