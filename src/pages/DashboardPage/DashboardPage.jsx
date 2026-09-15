@@ -6,19 +6,19 @@ import apiClient from "../../api/client";
 
 import MainLayout from "../../layouts/MainLayout/MainLayout"; 
 
-import styles from "./DashboardPage.module.css"
+import styles from "./DashboardPage.module.css"; 
  
 
 const DashboardPage = () => {
     const navigate = useNavigate(); 
     const { user, loading } = useContext(AuthContext); 
     const [ programs, setPrograms ] = useState([]);
-
     const [ error, setError ] = useState(""); 
 
     useEffect(() => {
         const getPrograms = async () => {
             try {
+                setError(""); // error cleaning
                 const response = await apiClient.get("/programs/"); 
                 const programs = response.data.data; 
                 setPrograms(programs || []); 
@@ -42,6 +42,7 @@ const DashboardPage = () => {
         if (!confirmDelete) return;
 
         try {
+            setError(""); 
             await apiClient.delete(`/programs/${programId}`); 
 
             setPrograms(prev => prev.filter(p => p.id !== programId));
@@ -78,6 +79,7 @@ const DashboardPage = () => {
                                 </ul>
                                 </Link>
                                 <button onClick={() => handleDeleteProgram(program.id)} className={styles.deleteProgram}>Delete program</button>
+                                {error && <p className={styles.errorMessage}>{error}</p>}
                             </article>
                     ))}
                 </div>

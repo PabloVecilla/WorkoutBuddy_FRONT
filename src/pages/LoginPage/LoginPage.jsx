@@ -1,34 +1,43 @@
 import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import styles from './LoginPage.module.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { user, login, loading } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmiting] = useState(false); 
+
+  if (loading) return <p>Checking session...</p>
+
+  if (user) return <Navigate to="/dashboard" replace /> 
 
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
+    setFormData((current) => ({
+      ...current,
       [event.target.name]: event.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
 
+    setIsSubmiting(true); 
+
     try {
       await login(formData);
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Login failed');
+      setError(err.message || 'Login failed');
+    } finally {
+      setIsSubmiting(false); 
     }
   };
 
@@ -60,10 +69,10 @@ const LoginPage = () => {
             required
           />
         </article>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Logging in..." : "Login"}</button>
       </form>
       
-      {error && <p className={styles.errorMessage}>{error}</p>}
+      {error && <p className={styles.errorMessage} role='alert'>{error}</p>}
       
       <Link to="/register">Create an account</Link>
     </main>

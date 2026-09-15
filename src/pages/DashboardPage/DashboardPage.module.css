@@ -58,4 +58,7 @@
         flex-direction: row;
         justify-content: space-between;
     }
+    & p.generateProgram {
+        color: #942626;
+    }
 }
