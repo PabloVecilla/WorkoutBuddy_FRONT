@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getWorkoutExercisesInProgramById, updateWorkoutExercise } from "../../services/workout.service";
 import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
+import { useWorkoutTimer } from "../../hooks/useWorkoutTimer";
+import { createWorkoutSession } from "../../services/session.service"; 
 import styles from "./WorkoutDetailPage.module.css"; 
+
 
 const WorkoutDetailPage = () => {
     const { programId, workoutId } = useParams(); 
@@ -12,12 +15,33 @@ const WorkoutDetailPage = () => {
     const [weight, setWeight] = useState(""); 
     const [reps, setReps] = useState(""); 
 
+    const [session, setSession] = useState(null);
+    const [isStarting, setIsStarting] = useState(false);
+
     const handleBlur = () => {
         if (weight) {
             setWeight(parseFloat(weight).toFixed(2));
         }
         if (reps) {
             setReps(parseInt(reps, 10));
+        }
+    };
+
+    // Pass activeSession.startedAt into the custom timer hook
+    const { formattedTime } = useWorkoutTimer(session?.startedAt);
+
+    // Handle Start Session button click
+    const handleStartSession = async () => {
+        setIsStarting(true);
+        setError("");
+        try {
+        // Calls your backend route: POST /programs/:programId/workouts/:workoutId/sessions
+        const responseData = await createWorkoutSession(programId, workoutId);
+        setSession(responseData); 
+        } catch (err) {
+        setError(err.response?.data?.error?.message || "Failed to start session");
+        } finally {
+        setIsStarting(false);
         }
     };
 
@@ -55,7 +79,28 @@ const WorkoutDetailPage = () => {
 
     return (
         <main className={styles.workoutDetailPage}>
-            <h1>Workout</h1>
+            <header className={styles.sessionHeader}>
+                <h1>Workout</h1>
+
+                {/* Dynamic Display: Show Timer or Start Button */}
+                {session ? (
+                <div className={styles.timerDisplay}>
+                    <span className={styles.pulseDot}></span>
+                    <span>{formattedTime}</span>
+                </div>
+                ) : (
+                <button 
+                    className={styles.startBtn} 
+                    onClick={handleStartSession} 
+                    disabled={isStarting}
+                >
+                    {isStarting ? "Starting..." : "Start Session"}
+                </button>
+                )}
+            </header>
+
+            {error && <p className={styles.errorText}>{error}</p>}
+
             <div className={styles.contentWrapper}>
                 {workout.map((workoutExercise) => (
                     <section className={styles.exerciseContainer} key={workoutExercise.id}>
