@@ -1,81 +1,58 @@
 import { useContext, useEffect, useState } from "react";
-
 import { Link, useParams } from "react-router-dom";
-
 import { AuthContext } from "../../context/authContext";
-
-import apiClient from "../../api/client";
-
-import MainLayout from "../../layouts/MainLayout/MainLayout"; 
-
-import styles from "./ProgramDetailPage.module.css"
+import { getProgramById } from "../../services/program.service";
+import styles from "./ProgramDetailPage.module.css";
 
 const ProgramDetailPage = () => {
     const { loading } = useContext(AuthContext); 
-
     const { id } = useParams(); 
 
     const [ program, setProgram ] = useState(null); 
     const [ error, setError ] = useState(""); 
 
-    useEffect (() => {
-        const getProgramById = async () => {
+    useEffect(() => {
+        const fetchProgram = async () => {
             try {
-                const response = await apiClient.get(`/programs/${id}`); 
-                setProgram(response.data.data);  
-
+                const data = await getProgramById(id); 
+                setProgram(data);  
             } catch (err) {
                 setError(err.response?.data?.error?.message || "Error loading Program"); 
             }
         }; 
-        getProgramById(); 
-        
-    }, [id])
+
+        fetchProgram(); 
+    }, [id]);
 
     if (loading) return <p>loading...</p>; 
-
-    if (error) return <p>{error}</p>
-
+    if (error) return <p>{error}</p>;
     if (!program) return <p>Fetching program details...</p>; 
 
     const formatDBInput = (text) => {
         const withSpaces = text.replaceAll('_', ' '); 
         return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
-      }
-      
-      // Example usage:
-      console.log(formatDBInput("user_profile_settings")); // Output: "User profile settings"
-      
+    };
 
     return (
-        <MainLayout>
         <main className={styles.programDetailPage}>
             <h1>Program: {program.name}</h1>
             <div className={styles.cardsContainer}>
-                {
-                    program?.Workouts?.map((day) => (
-                            <Link to={`workout/${day.id}`} className={styles.link}><article className="card"
-                                        key={day.id}>
-                                <header>
-                                    <h2>Day <b>{day.dayNumber} -  {formatDBInput(day.focus)}</b></h2>
-                                </header>
-                                {/* <div>
-                                    {day.workoutExercises?.map((workoutExercise) => (
-                                        <div key={workoutExercise.exercise.id}>
-                                            <p className="name">{workoutExercise.exercise.name}</p>
-                                            <p>{workoutExercise.sets} sets x {workoutExercise.reps} reps</p>
-                                        </div>
-                                    ))}
-                                </div> */}
-                            </article>
-                            <p className={styles.weightSymbol}>||-||</p>
-                            </Link>
-                        )
-                    )}
+                {program?.Workouts?.map((day) => (
+                    /* Key moved to outer Link wrapper */
+                    <Link key={day.id} to={`workout/${day.id}`} className={styles.link}>
+                        <article className="card">
+                            <header>
+                                <h2>
+                                    Day <b>{day.dayNumber} - {formatDBInput(day.focus)}</b>
+                                </h2>
+                            </header>
+                        </article>
+                        <p className={styles.weightSymbol}>||-||</p>
+                    </Link>
+                ))}
             </div>
         </main>
-        </MainLayout>
     );
 };
 
-export default ProgramDetailPage; 
+export default ProgramDetailPage;

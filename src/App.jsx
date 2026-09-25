@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import LoginPage from "./pages/LoginPage/LoginPage"; 
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import DashboardPage from "./pages/DashboardPage/DashboardPage"; 
-import ProtectedRoute from './routes/ProtectedRoute';
 import GenerateProgramPage from './pages/GenerateProgramPage/GenerateProgramPage';
 import ProgramDetailPage from './pages/ProgramDetailPage/ProgramDetailPage';
 import WorkoutDetailPage from './pages/WorkoutDetailPage/WorkoutDetailPage'; 
+import ProtectedRouteOutlet from './layouts/ProtectedRoutesLayout/ProtectedRoutesLayout';
+import MainLayout from './layouts/MainLayout/MainLayout';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
   return (
@@ -15,32 +16,21 @@ function App() {
         <Route path='/register' element={ <RegisterPage /> } />
         <Route path='/' element={ <LoginPage /> } />
 
-        <Route path='/dashboard' element={ 
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        } />
+        <Route element= { <ProtectedRouteOutlet /> }>
+          <Route element= { <MainLayout /> }>
+            <Route path='/dashboard' element={ <DashboardPage /> } />
 
-        <Route path="/generate" element={ 
-          <ProtectedRoute>
-            <GenerateProgramPage />
-          </ProtectedRoute>
-         } />
+            <Route path="/generate" element={ <GenerateProgramPage /> } />
 
-         <Route path='/programs/:id' element= {
-          <ProtectedRoute>
-            <ProgramDetailPage />
-          </ProtectedRoute>
-         } />
-         
-        <Route path='/programs/:programId/workout/:workoutId' element= {
-          <ProtectedRoute>
-            <WorkoutDetailPage />
-          </ProtectedRoute>
-         } />
+            <Route path='/programs/:id' element= { <ProgramDetailPage /> } />
+
+            <Route path='/programs/:programId/workout/:workoutId' element= { <WorkoutDetailPage /> } />
+          </Route>
+        </Route>
+        <Route path="*" element={ <NotFoundPage /> } />
       </ Routes>
     </BrowserRouter>
   ); 
 }; 
 
-export default App
+export default App; 
