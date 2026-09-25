@@ -6,8 +6,6 @@ import styles from "./GenerateProgramPage.module.css"
 
 import apiClient from "../../api/client";
 
-import MainLayout from "../../layouts/MainLayout/MainLayout"; 
-
 const GenerateProgramPage = () => {
     const navigate = useNavigate(); 
     const { user, loading } = useContext(AuthContext); 
@@ -57,7 +55,6 @@ const GenerateProgramPage = () => {
     }; 
 
     return (
-        <MainLayout>
         <main className={styles.generateProgramMain}>
             <h1>Program Generator</h1>
                 <h2>Welcome, {user.name}</h2>
@@ -125,7 +122,6 @@ const GenerateProgramPage = () => {
                     {error && <p className={styles.errorMessage}>{error}</p>}
                 </form>
         </main>
-        </MainLayout>
     );
 };
 

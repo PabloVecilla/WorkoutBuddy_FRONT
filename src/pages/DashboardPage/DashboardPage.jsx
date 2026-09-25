@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from "react"; 
 import { useNavigate, Link } from "react-router-dom";
-
 import { AuthContext } from "../../context/authContext";
 import apiClient from "../../api/client";
-
-import MainLayout from "../../layouts/MainLayout/MainLayout"; 
 
 import styles from "./DashboardPage.module.css"; 
  
@@ -54,7 +51,6 @@ const DashboardPage = () => {
     if (loading) return <p>loading...</p>; 
 
     return (
-        <MainLayout>
         <main className={styles.dashboardPage}>
             <h1>{user?.name}'s Programs</h1>
                 <div className={styles.cardsContainer}>
@@ -85,7 +81,6 @@ const DashboardPage = () => {
                 </div>
                 <button onClick={handleGenerateProgram} className={styles.generateProgram}>Generate Program</button>
         </main>
-        </MainLayout>
     );
 };
 

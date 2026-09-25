@@ -1,58 +1,69 @@
-import { useContext, useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import { AuthContext } from "../../context/authContext";
-
-import apiClient from "../../api/client";
-
-import styles from "./WorkoutDetailPage.module.css"
-
-import MainLayout from "../../layouts/MainLayout/MainLayout"; 
+import { getWorkoutExercisesInProgramById, updateWorkoutExercise } from "../../services/workout.service";
+import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
+import styles from "./WorkoutDetailPage.module.css"; 
 
 const WorkoutDetailPage = () => {
-    const { loading } = useContext(AuthContext); 
-
     const { programId, workoutId } = useParams(); 
+    const [workout, setWorkout] = useState(null); 
+    const [error, setError] = useState(""); 
 
-    const [ workout, setWorkout ] = useState(null); 
+    const [weight, setWeight] = useState(""); 
+    const [reps, setReps] = useState(""); 
 
-    // const [ formData, setFormData ] = useState({ weight: 0, sets: 0, reps: 0 }); 
+    const handleBlur = () => {
+        if (weight) {
+            setWeight(parseFloat(weight).toFixed(2));
+        }
+        if (reps) {
+            setReps(parseInt(reps, 10));
+        }
+    };
 
-    const [ error, setError ] = useState(""); 
-
-    useEffect (() => {
-        const getWorkoutExercisesInProgramById = async () => {
+    useEffect(() => {
+        const fetchWorkoutExercises = async () => {
             try {
-                const response = await apiClient.get(`/programs/${programId}/workouts/${workoutId}/workout-exercises`); 
-                setWorkout(response.data);  
-
+                const data = await getWorkoutExercisesInProgramById(programId, workoutId); 
+                setWorkout(data);  
             } catch (err) {
-                setError(err.response?.data?.error?.message || "Error loading Program")
+                setError(err.response?.data?.error?.message || "Error loading workout details");
             }
         }; 
-        getWorkoutExercisesInProgramById(); 
-        
-    }, [programId, workoutId])
+        fetchWorkoutExercises(); 
+    }, [programId, workoutId]);
 
-    if (loading) return <p>loading...</p>; 
+    const handleExerciseChange = async (workoutExerciseId, newExercise) => {
+        try {
+            await updateWorkoutExercise(programId, workoutId, workoutExerciseId, newExercise.id);
+            
+            // Optimistically update the local exercise state
+            setWorkout((prev) =>
+                prev.map((item) =>
+                    item.id === workoutExerciseId
+                        ? { ...item, exercise: newExercise }
+                        : item
+                )
+            );
+        } catch (err) {
+            setError(err.response?.data?.error?.message || "Failed to update exercise");
+        }
+    };
 
-    if (error) return <p>{error}</p>
-
+    if (error) return <p>{error}</p>;
     if (!workout) return <p>Fetching workout details...</p>; 
 
     return (
-        <MainLayout>
         <main className={styles.workoutDetailPage}>
-            <h1>Workout: {}</h1>
+            <h1>Workout</h1>
             <div className={styles.contentWrapper}>
-                { workout.data?.map((workoutExercise) => (
-                    <section className={styles.exerciseContainer}
-                                key={workoutExercise.id}>
+                {workout.map((workoutExercise) => (
+                    <section className={styles.exerciseContainer} key={workoutExercise.id}>
+                        <ExerciseSelect
+                            currentExercise={workoutExercise.exercise} 
+                            onExerciseChange={(newEx) => handleExerciseChange(workoutExercise.id, newEx)}
+                        />
 
-                        <h2><b>{workoutExercise.exercise.name}</b></h2>
-                        <button>Edit</button>
-                        
                         {Array.from({ length: workoutExercise.sets }).map((_, index) => (
                             <article key={index} className={styles.exerciseCard}>
                                 <h3>Set {index + 1}</h3>
@@ -64,16 +75,18 @@ const WorkoutDetailPage = () => {
                                         <input 
                                             type="number" 
                                             step="0.01" 
-                                            inputmode="decimal"
+                                            inputMode="decimal"
                                             id="weight-kg" 
                                             placeholder={ workoutExercise.weightKg ? workoutExercise.weightKg : "0.00" }
-                                            onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
+                                            onChange={(e) => setWeight(e.target.value)} 
+                                            onBlur={handleBlur} />
                                         <label htmlFor="reps">Reps: </label>
                                         <input 
                                             type="number" 
-                                            id="precio" 
+                                            id="reps" 
                                             placeholder={ workoutExercise.reps ? workoutExercise.reps : "0" }
-                                            onblur="if(this.value) this.value = parseFloat(this.value).toFixed(2);" />
+                                            onChange={(e) => setReps(e.target.value)} 
+                                            onBlur={handleBlur} />
                                         </section>
                                         <button /*</form>disabled onClick={() => handleSendExerciseData}*/ className={styles.send}>Done!</button>
                                     </form>
@@ -86,8 +99,7 @@ const WorkoutDetailPage = () => {
                 ))}
             </div>
         </main>
-        </MainLayout>
     );
 };
 
-export default WorkoutDetailPage; 
+export default WorkoutDetailPage;
