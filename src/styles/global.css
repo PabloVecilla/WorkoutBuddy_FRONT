@@ -1,0 +1,8 @@
+/*
+ * Global stylesheet entry point.
+ * Keep this file imported once, from src/main.jsx. The import order is
+ * intentional: design tokens first, then normalization, then base styles.
+ */
+ @import "./tokens.css";
+ @import "./reset.css";
+ @import "./base.css";
