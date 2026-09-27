@@ -5,6 +5,7 @@ import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
 import { useWorkoutTimer } from "../../hooks/useWorkoutTimer";
 import { createWorkoutSession } from "../../services/session.service"; 
 import styles from "./WorkoutDetailPage.module.css"; 
+import { LoadingState, ErrorState, EmptyState } from "../../components/UI";
 
 
 const WorkoutDetailPage = () => {
@@ -74,8 +75,18 @@ const WorkoutDetailPage = () => {
         }
     };
 
-    if (error) return <p>{error}</p>;
-    if (!workout) return <p>Fetching workout details...</p>; 
+    if (error) return <ErrorState message={error} onRetry={fetchWorkoutExercises} />;
+    if (!workout) return <LoadingState message="Fetching workout details..." />;
+    if (workout.length === 0) {
+        return (
+            <EmptyState 
+                title="No Exercises In Workout" 
+                message="This workout doesn't have any exercises assigned yet."
+                actionLabel="+ Add Exercise"
+                onAction={() => navigate("/exercises")}
+            />
+        );
+    }
 
     return (
         <main className={styles.workoutDetailPage}>
