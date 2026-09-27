@@ -53,7 +53,7 @@ const ExerciseSelectHeader = ({ currentExercise, onExerciseChange }) => {
           onClick={handleToggle}
           aria-label="Expand exercise options"
         >
-          {isOpen ? "▲" : "▼"}
+          {isOpen ? "▲" : "edit"}
         </button>
       </div>
 
