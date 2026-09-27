@@ -1,0 +1,56 @@
+/* Minimal, low-specificity reset. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  min-height: 100%;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 2;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+:where(h1, h2, h3, h4, p, figure, blockquote, dl, dd) {
+  margin-block-start: 0;
+}
+
+:where(ul[role="list"], ol[role="list"]) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where(img, picture, video, canvas, svg) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(button, input, select, textarea) {
+  margin: 0;
+  font: inherit;
+}
+
+:where(button, [type="button"], [type="reset"], [type="submit"]) {
+  appearance: none;
+}
+
+:where(textarea) {
+  resize: vertical;
+}
+
+:where(table) {
+  border-collapse: collapse;
+  border-color: currentColor;
+}
+
+:where([hidden]) {
+  display: none !important;
+}

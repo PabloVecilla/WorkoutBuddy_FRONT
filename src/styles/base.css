@@ -1,0 +1,144 @@
+/* App-wide element defaults. Component layout remains in CSS Modules. */
+html {
+    background-color: var(--color-background);
+    font-family: var(--font-family-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    min-width: 20rem;
+    min-height: 100dvh;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-normal);
+  }
+  
+  #root {
+    min-height: 100dvh;
+    isolation: isolate;
+  }
+  
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  
+  :where(h1, h2, h3, h4) {
+    margin-block-end: var(--space-4);
+    color: var(--color-text-strong);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    text-wrap: balance;
+  }
+  
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+  
+  h4 {
+    font-size: var(--font-size-lg);
+  }
+  
+  p {
+    margin-block-end: var(--space-4);
+    text-wrap: pretty;
+  }
+  
+  a {
+    color: var(--color-primary);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+    transition: color var(--duration-normal) var(--ease-standard);
+  }
+  
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+  
+  :where(button, input, select, textarea) {
+    min-height: var(--control-min-height);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-muted);
+    color: var(--color-text);
+    transition:
+      border-color var(--duration-normal) var(--ease-standard),
+      background-color var(--duration-normal) var(--ease-standard),
+      box-shadow var(--duration-normal) var(--ease-standard),
+      color var(--duration-normal) var(--ease-standard);
+  }
+  
+  :where(input, select, textarea) {
+    max-width: 100%;
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  :where(button, [type="button"], [type="reset"], [type="submit"]) {
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-surface-raised);
+    cursor: pointer;
+  }
+  
+  :where(button, [type="button"], [type="reset"], [type="submit"]):hover:not(:disabled) {
+    background-color: var(--color-surface-hover);
+  }
+  
+  :where(button, input, select, textarea):disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+  
+  :where(input, textarea)::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+  
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: var(--shadow-focus);
+  }
+  
+  ::selection {
+    background-color: var(--color-highlight-background);
+    color: var(--color-highlight-text);
+  }
+  
+  hr {
+    width: 100%;
+    height: var(--border-width);
+    margin-block: var(--space-8);
+    border: 0;
+    background-color: var(--color-border-subtle);
+  }
+  
+  :where(code, kbd, samp, pre) {
+    font-family: var(--font-family-mono);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }

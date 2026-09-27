@@ -11,14 +11,14 @@
     gap: 12px;
     padding: 8px 14px;
     background-color: #1c1c1c;
-    border: 1px solid #333333;
-    border-radius: 8px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
   }
   
   .headerBar h2 {
     margin: 0;
     font-size: 1.2rem;
-    color: whitesmoke;
+    color: var(--color-text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -26,13 +26,13 @@
   
   .expandBtn {
     padding: 6px 10px;
-    background-color: #2a2a2a;
-    border: 1px solid #444444;
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
-    color: whitesmoke;
+    color: var(--color-text);
     cursor: pointer;
     font-size: 0.75rem;
-    transition: background-color 0.2s ease;
+    transition: background-color var(--duration-normal) ease;
   }
   
   .expandBtn:hover {
@@ -44,9 +44,9 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    background-color: #222222;
-    border: 1px solid #444444;
-    border-radius: 8px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     max-height: 200px;
     overflow-y: auto;
     list-style: none;
@@ -58,13 +58,13 @@
   
   .optionItem {
     padding: 10px 14px;
-    color: whitesmoke;
+    color: var(--color-text);
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--duration-fast) ease;
   }
   
   .optionItem:hover {
-    background-color: #333333;
+    background-color: var(--color-surface-hover);
   }
   
   .activeOption {
@@ -74,6 +74,6 @@
   
   .emptyOption {
     padding: 10px 14px;
-    color: #888888;
+    color: var(--color-text-muted);
     font-size: 0.85rem;
   }
