@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { getWorkoutExercisesInProgramById, updateWorkoutExercise } from "../../services/workout.service";
-import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
+// import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
+import ExerciseCard from "../../components/ExerciseCard/ExerciseCard";
 import { useWorkoutTimer } from "../../hooks/useWorkoutTimer";
 import { createWorkoutSession } from "../../services/session.service"; 
 import styles from "./WorkoutDetailPage.module.css"; 
 import { LoadingState, ErrorState, EmptyState } from "../../components/UI";
+import { updateSetData } from "../../services/set.service"; 
 
 
 const WorkoutDetailPage = () => {
@@ -13,20 +15,22 @@ const WorkoutDetailPage = () => {
     const [workout, setWorkout] = useState(null); 
     const [error, setError] = useState(""); 
 
-    const [weight, setWeight] = useState(""); 
-    const [reps, setReps] = useState(""); 
+    const [ setData, setSetData ] = useState({executedReps: 0, weightKg: 0.00,  isCompleted: true}); 
+
+    // const [weight, setWeight] = useState(""); 
+    // const [reps, setReps] = useState(""); 
 
     const [session, setSession] = useState(null);
     const [isStarting, setIsStarting] = useState(false);
 
-    const handleBlur = () => {
-        if (weight) {
-            setWeight(parseFloat(weight).toFixed(2));
-        }
-        if (reps) {
-            setReps(parseInt(reps, 10));
-        }
-    };
+    // const handleBlur = () => {
+    //     if (weight) {
+    //         setWeight(parseFloat(weight).toFixed(2));
+    //     }
+    //     if (reps) {
+    //         setReps(parseInt(reps, 10));
+    //     }
+    // };
 
     // Pass activeSession.startedAt into the custom timer hook
     const { formattedTime } = useWorkoutTimer(session?.startedAt);
@@ -46,6 +50,21 @@ const WorkoutDetailPage = () => {
         }
     };
 
+    const handleSetUpdate = async (setId, updateData) => {
+        const updatedSet = await updateSetData(
+          session.id,
+          setId,
+          updateData
+        );
+      
+        setSession((currentSession) => ({
+          ...currentSession,
+          workoutSets: currentSession.workoutSets.map((set) =>
+            set.id === updatedSet.id ? updatedSet : set
+          ),
+        }));
+      };
+
     useEffect(() => {
         const fetchWorkoutExercises = async () => {
             try {
@@ -57,6 +76,26 @@ const WorkoutDetailPage = () => {
         }; 
         fetchWorkoutExercises(); 
     }, [programId, workoutId]);
+
+    const setsByWorkoutExerciseId = useMemo(() => {
+        const groups = {};
+      
+        for (const set of session?.workoutSets ?? []) {
+          const exerciseId = set.workoutExerciseId;
+      
+          if (!groups[exerciseId]) {
+            groups[exerciseId] = [];
+          }
+      
+          groups[exerciseId].push(set);
+        }
+      
+        for (const sets of Object.values(groups)) {
+          sets.sort((a, b) => a.setNumber - b.setNumber);
+        }
+      
+        return groups;
+      }, [session]);
 
     const handleExerciseChange = async (workoutExerciseId, newExercise) => {
         try {
@@ -114,6 +153,21 @@ const WorkoutDetailPage = () => {
 
             <div className={styles.contentWrapper}>
                 {workout.map((workoutExercise) => (
+                    <ExerciseCard
+                    key={workoutExercise.id}
+                    workoutExercise={workoutExercise}
+                    sessionSets={
+                        setsByWorkoutExerciseId[workoutExercise.id] ?? []
+                    }
+                    sessionActive={Boolean(session)}
+                    onExerciseChange={handleExerciseChange}
+                    onSetUpdate={handleSetUpdate}
+                    />
+                ))}
+            </div>
+
+            {/* <div className={styles.contentWrapper}>
+                {workout.map((workoutExercise) => (
                     <section className={styles.exerciseContainer} key={workoutExercise.id}>
                         <ExerciseSelect
                             currentExercise={workoutExercise.exercise} 
@@ -144,7 +198,7 @@ const WorkoutDetailPage = () => {
                                             onChange={(e) => setReps(e.target.value)} 
                                             onBlur={handleBlur} />
                                         </section>
-                                        <button /*</form>disabled onClick={() => handleSendExerciseData}*/ className={styles.send}>Done!</button>
+                                        <button </form>disabled onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
                                     </form>
                                     
                                 </footer>
@@ -153,7 +207,7 @@ const WorkoutDetailPage = () => {
                         <p className={styles.weightSymbol}>||-||</p>
                     </section>
                 ))}
-            </div>
+            </div> */}
         </main>
     );
 };

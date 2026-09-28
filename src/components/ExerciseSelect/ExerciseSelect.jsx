@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { getAlternativesForExercise } from "../../services/exercise.service";
 import styles from "./ExerciseSelect.module.css";
 
-const ExerciseSelectHeader = ({ currentExercise, onExerciseChange }) => {
+const ExerciseSelectHeader = ({ currentExercise, onExerciseChange, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,6 @@ const ExerciseSelectHeader = ({ currentExercise, onExerciseChange }) => {
       setIsLoading(true);
       try {
         const alternatives = await getAlternativesForExercise(currentExercise.movementPattern);
-        console.log("movementPattern: ", currentExercise.movementPattern)
         setOptions(alternatives);
       } catch (err) {
         console.error("Failed to load alternatives:", err);
@@ -50,6 +49,7 @@ const ExerciseSelectHeader = ({ currentExercise, onExerciseChange }) => {
         <button
           type="button"
           className={styles.expandBtn}
+          disabled={disabled}
           onClick={handleToggle}
           aria-label="Expand exercise options"
         >
