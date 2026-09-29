@@ -15,8 +15,6 @@ const WorkoutDetailPage = () => {
     const [workout, setWorkout] = useState(null); 
     const [error, setError] = useState(""); 
 
-    const [ setData, setSetData ] = useState({executedReps: 0, weightKg: 0.00,  isCompleted: true}); 
-
     // const [weight, setWeight] = useState(""); 
     // const [reps, setReps] = useState(""); 
 
@@ -63,6 +61,7 @@ const WorkoutDetailPage = () => {
             set.id === updatedSet.id ? updatedSet : set
           ),
         }));
+        return updatedSet; //allows SetRow to refresh its draft with the normalized server values
       };
 
     useEffect(() => {
@@ -154,14 +153,12 @@ const WorkoutDetailPage = () => {
             <div className={styles.contentWrapper}>
                 {workout.map((workoutExercise) => (
                     <ExerciseCard
-                    key={workoutExercise.id}
-                    workoutExercise={workoutExercise}
-                    sessionSets={
-                        setsByWorkoutExerciseId[workoutExercise.id] ?? []
-                    }
-                    sessionActive={Boolean(session)}
-                    onExerciseChange={handleExerciseChange}
-                    onSetUpdate={handleSetUpdate}
+                        key={workoutExercise.id}
+                        workoutExercise={workoutExercise}
+                        sessionSets={ setsByWorkoutExerciseId[workoutExercise.id] ?? [] }
+                        sessionActive={Boolean(session)}
+                        onExerciseChange={handleExerciseChange}
+                        onSetUpdate={handleSetUpdate}
                     />
                 ))}
             </div>

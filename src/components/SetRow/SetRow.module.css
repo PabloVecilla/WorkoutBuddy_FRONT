@@ -1,15 +1,7 @@
-.exerciseCard {
-    margin: auto;
+.setRow {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-
-    & .prescription {
-        display: flex;
-        flex-direction: column;
-        
-    }
 
     & .link {
         text-decoration: none;
@@ -82,5 +74,40 @@
         justify-content: center;
         align-items: center;
     }
+    .sessionHeader {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      
+      .timerDisplay {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: monospace;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--color-primary);
+        background-color: #1b2e1b;
+        padding: 8px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid #2e7d32;
+      }
+      
+      /* Pulsing red/green dot to show timer is live */
+      .pulseDot {
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-primary);
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.85); }
+        100% { opacity: 1; transform: scale(1); }
+      }
 }
-
