@@ -1,12 +1,14 @@
 import ExerciseSelect from "../ExerciseSelect/ExerciseSelect";
 import styles from "./ExerciseCard.module.css";
+import SetRow from "../SetRow/SetRow";
 
 const ExerciseCard = ({
-  workoutExercise,
-  sessionSets,
-  sessionActive,
-  onExerciseChange,
-}) => {
+    workoutExercise,
+    sessionSets,
+    sessionActive,
+    onExerciseChange,
+    onSetUpdate,
+  }) => {
   const {
     id,
     exercise,
@@ -16,7 +18,7 @@ const ExerciseCard = ({
   } = workoutExercise;
 
   return (
-    <section className={styles.card}>
+    <section className={styles.exerciseCard}>
       <ExerciseSelect
         currentExercise={exercise}
         disabled={sessionActive}
@@ -33,11 +35,14 @@ const ExerciseCard = ({
 
       <div className={styles.setList}>
         {sessionActive ? (
-          sessionSets.map((set) => (
-            <article key={set.id}>
-              Set {set.setNumber}: {set.targetReps} target reps
-            </article>
-          ))
+            sessionSets.map((set) => (
+                <SetRow
+                    key={set.id}
+                    workoutSet={set}
+                    onSave={onSetUpdate}
+                    disabled={!sessionActive}
+                />
+            ))
         ) : (
           <p>Start the session to log your sets.</p>
         )}
