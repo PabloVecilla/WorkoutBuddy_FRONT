@@ -1,12 +1,18 @@
 import { useState } from "react";
 import styles from "./SetRow.module.css";
+import { CardioSetFields } from "./SetRowFields/CardioSetFields";
+import { StrengthSetFields } from "./SetRowFields/StrengthSetFields";
 
 const SetRow = ({
   workoutSet,
+  mode,
   onSave,
   disabled = false,
 }) => {
-  const [formData, setFormData] = useState(() => ({
+  const [formData, setFormData] = useState(() => mode === "cardio" ? ({
+    intensityLevel: workoutSet.intensityLevel ?? "",
+    durationMinutes: workoutSet.durationMinutes ?? "",
+  }) : ({
     weightKg: workoutSet.weightKg ?? "",
     executedReps: workoutSet.executedReps ?? "",
   }));
@@ -14,8 +20,13 @@ const SetRow = ({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const weightInputId = `weight-${workoutSet.id}`;
-  const repsInputId = `reps-${workoutSet.id}`;
+  // Input ID generators
+  const ids = {
+    weight: `weight-${workoutSet.id}`,
+    reps: `reps-${workoutSet.id}`,
+    duration: `duration-${workoutSet.id}`,
+    intensity: `intensity-${workoutSet.id}`,
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,53 +41,56 @@ const SetRow = ({
     event.preventDefault();
     setError("");
 
-    if (
-      formData.weightKg === "" ||
-      formData.executedReps === ""
-    ) {
-      setError("Enter weight and completed reps");
-      return;
+    let payload = { isCompleted: true };
+
+    if ( mode === "cardio") {
+      if (formData.intensityLevel === "" || formData.durationMinutes === "") {
+        setError("Enter intensity level and duration in minutes of your cardio set");
+        return;
+      } 
+      const intensityLevel = Number(formData.intensityLevel); 
+      const durationMinutes = Number(formData.durationMinutes); 
+      if ( !Number.isInteger(intensityLevel) || intensityLevel < 1 || intensityLevel > 10) {
+        setError(" set Intensity level between 1 and 10");
+        return;
+      }
+      if ( !Number.isInteger(durationMinutes) || durationMinutes < 1 || durationMinutes > 180) {
+        setError(" set Duration in between 1 and 180 minutes");
+        return;
+      }
+      payload = {... payload, intensityLevel, durationMinutes }; 
+    } else {
+      if (formData.weightKg === "" || formData.executedReps === "") {
+        setError("Enter weight and completed reps");
+        return;
+      }
+      const weightKg = Number(formData.weightKg);
+      const executedReps = Number(formData.executedReps);
+
+      if ( !Number.isFinite(weightKg) || weightKg < 0 || weightKg > 999.99 ) {
+        setError("Weight must be between 0 and 999.99 kg");
+        return;
+      }
+      if ( !Number.isInteger(executedReps) || executedReps < 1 || executedReps > 30) {
+        setError("Reps must be a whole number between 1 and 30");
+        return;
+      }
+      payload = { ...payload, weightKg, executedReps }; 
     }
-
-    const weightKg = Number(formData.weightKg);
-    const executedReps = Number(formData.executedReps);
-
-    if (
-      !Number.isFinite(weightKg) ||
-      weightKg < 0 ||
-      weightKg > 999.99
-    ) {
-      setError("Weight must be between 0 and 999.99 kg");
-      return;
-    }
-
-    if (
-      !Number.isInteger(executedReps) ||
-      executedReps < 1 ||
-      executedReps > 30
-    ) {
-      setError("Reps must be a whole number between 1 and 30");
-      return;
-    }
-
     setIsSaving(true);
 
     try {
-      const updatedSet = await onSave(workoutSet.id, {
-        weightKg,
-        executedReps,
-        isCompleted: true,
-      });
+      const updatedSet = await onSave(workoutSet.id, payload);
 
-      setFormData({
+      setFormData( mode === "cardio" ? {
+        intensityLevel: updatedSet.intensityLevel ?? "",
+        durationMinutes: updatedSet.durationMinutes ?? "",
+      } : {
         weightKg: updatedSet.weightKg ?? "",
         executedReps: updatedSet.executedReps ?? "",
       });
     } catch (err) {
-      setError(
-        err.response?.data?.error?.message ||
-          "Unable to save this set"
-      );
+      setError ( err.response?.data?.error?.message || "Unable to save this set" );
     } finally {
       setIsSaving(false);
     }
@@ -90,11 +104,26 @@ const SetRow = ({
       <h3>Set {workoutSet.setNumber}</h3>
 
       <p className={styles.target}>
-        Target: {workoutSet.targetReps} reps
+        Target: { mode === "cardio" ? ` ${workoutSet.durationMinutes} minutes` : ` ${workoutSet.targetReps} reps`}
       </p>
 
       <div className={styles.fields}>
-        <label htmlFor={weightInputId}>
+        {mode === "cardio" ? 
+        <CardioSetFields 
+          formData={formData}
+          onChange={handleChange}
+          disabled={disabled || isSaving}
+          styles={styles}
+          ids={ids}
+        /> : 
+        <StrengthSetFields 
+          formData={formData}
+          onChange={handleChange}
+          disabled={disabled || isSaving}
+          styles={styles}
+          ids={ids}
+        />}
+        {/* <label htmlFor={weightInputId}>
           Weight
           <input
             id={weightInputId}
@@ -124,7 +153,7 @@ const SetRow = ({
             onChange={handleChange}
             disabled={disabled || isSaving}
           />
-        </label>
+        </label> */}
       </div>
 
       <button
