@@ -17,6 +17,8 @@ const ExerciseCard = ({
     restSeconds,
   } = workoutExercise;
 
+  const mode = workoutExercise.exercise.movementPattern; 
+
   return (
     <section className={styles.exerciseCard}>
       <ExerciseSelect
@@ -44,6 +46,7 @@ const ExerciseCard = ({
                 <SetRow
                     key={set.id}
                     workoutSet={set}
+                    mode={mode}
                     onSave={onSetUpdate}
                     disabled={!sessionActive}
                 />
