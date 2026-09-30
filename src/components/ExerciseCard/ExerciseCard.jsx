@@ -27,11 +27,16 @@ const ExerciseCard = ({
         }
       />
 
-      <div className={styles.prescription}>
-        <span>{targetSetCount} sets</span>
-        <span>{targetReps} reps</span>
-        <span>{restSeconds}s rest</span>
-      </div>
+      {!sessionActive && (
+        <div
+          className={styles.prescription}
+          aria-label="Workout prescription"
+        >
+          <span>{targetSetCount} sets</span>
+          <span>{targetReps} reps</span>
+          <span>{restSeconds}s rest</span>
+        </div>
+      )}
 
       <div className={styles.setList}>
         {sessionActive ? (
