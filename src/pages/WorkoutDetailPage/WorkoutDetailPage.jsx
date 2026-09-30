@@ -156,7 +156,7 @@ const WorkoutDetailPage = () => {
                         key={workoutExercise.id}
                         workoutExercise={workoutExercise}
                         sessionSets={ setsByWorkoutExerciseId[workoutExercise.id] ?? [] }
-                        sessionActive={Boolean(session)}
+                        sessionActive={session?.isInProgress === true}                        
                         onExerciseChange={handleExerciseChange}
                         onSetUpdate={handleSetUpdate}
                     />
