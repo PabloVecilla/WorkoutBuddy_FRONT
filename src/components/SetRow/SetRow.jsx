@@ -104,7 +104,7 @@ const SetRow = ({
       <h3>Set {workoutSet.setNumber}</h3>
 
       <p className={styles.target}>
-        Target: { mode === "cardio" ? ` ${workoutSet.durationMinutes} minutes` : ` ${workoutSet.targetReps} reps`}
+        Target: { mode === "cardio" ? ` ${workoutSet.targetDurationMinutes} minutes` : ` ${workoutSet.targetReps} reps`}
       </p>
 
       <div className={styles.fields}>
@@ -123,37 +123,6 @@ const SetRow = ({
           styles={styles}
           ids={ids}
         />}
-        {/* <label htmlFor={weightInputId}>
-          Weight
-          <input
-            id={weightInputId}
-            name="weightKg"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            max="999.99"
-            step="0.01"
-            value={formData.weightKg}
-            onChange={handleChange}
-            disabled={disabled || isSaving}
-          />
-        </label>
-
-        <label htmlFor={repsInputId}>
-          Reps
-          <input
-            id={repsInputId}
-            name="executedReps"
-            type="number"
-            inputMode="numeric"
-            min="1"
-            max="30"
-            step="1"
-            value={formData.executedReps}
-            onChange={handleChange}
-            disabled={disabled || isSaving}
-          />
-        </label> */}
       </div>
 
       <button

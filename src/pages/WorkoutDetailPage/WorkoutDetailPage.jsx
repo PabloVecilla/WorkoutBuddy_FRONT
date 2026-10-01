@@ -15,20 +15,8 @@ const WorkoutDetailPage = () => {
     const [workout, setWorkout] = useState(null); 
     const [error, setError] = useState(""); 
 
-    // const [weight, setWeight] = useState(""); 
-    // const [reps, setReps] = useState(""); 
-
     const [session, setSession] = useState(null);
     const [isStarting, setIsStarting] = useState(false);
-
-    // const handleBlur = () => {
-    //     if (weight) {
-    //         setWeight(parseFloat(weight).toFixed(2));
-    //     }
-    //     if (reps) {
-    //         setReps(parseInt(reps, 10));
-    //     }
-    // };
 
     // Pass activeSession.startedAt into the custom timer hook
     const { formattedTime } = useWorkoutTimer(session?.startedAt);
@@ -162,49 +150,6 @@ const WorkoutDetailPage = () => {
                     />
                 ))}
             </div>
-
-            {/* <div className={styles.contentWrapper}>
-                {workout.map((workoutExercise) => (
-                    <section className={styles.exerciseContainer} key={workoutExercise.id}>
-                        <ExerciseSelect
-                            currentExercise={workoutExercise.exercise} 
-                            onExerciseChange={(newEx) => handleExerciseChange(workoutExercise.id, newEx)}
-                        />
-
-                        {Array.from({ length: workoutExercise.sets }).map((_, index) => (
-                            <article key={index} className={styles.exerciseCard}>
-                                <h3>Set {index + 1}</h3>
-
-                                <footer className={styles.weightReps}>
-                                    <form action="">
-                                        <section className={styles.formSection}>
-                                        <label htmlFor="weight-kg">Weight:</label>
-                                        <input 
-                                            type="number" 
-                                            step="0.01" 
-                                            inputMode="decimal"
-                                            id="weight-kg" 
-                                            placeholder={ workoutExercise.weightKg ? workoutExercise.weightKg : "0.00" }
-                                            onChange={(e) => setWeight(e.target.value)} 
-                                            onBlur={handleBlur} />
-                                        <label htmlFor="reps">Reps: </label>
-                                        <input 
-                                            type="number" 
-                                            id="reps" 
-                                            placeholder={ workoutExercise.reps ? workoutExercise.reps : "0" }
-                                            onChange={(e) => setReps(e.target.value)} 
-                                            onBlur={handleBlur} />
-                                        </section>
-                                        <button </form>disabled onClick={() => handleSendExerciseData} className={styles.send}>Done!</button>
-                                    </form>
-                                    
-                                </footer>
-                            </article>
-                        ))}
-                        <p className={styles.weightSymbol}>||-||</p>
-                    </section>
-                ))}
-            </div> */}
         </main>
     );
 };

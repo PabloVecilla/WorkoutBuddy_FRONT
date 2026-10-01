@@ -17,7 +17,7 @@ const ExerciseCard = ({
     restSeconds,
   } = workoutExercise;
 
-  const mode = workoutExercise.exercise.movementPattern; 
+  const mode = workoutExercise.exercise.movementPattern === "cardio" ? "cardio" : "strength"; 
 
   return (
     <section className={styles.exerciseCard}>
