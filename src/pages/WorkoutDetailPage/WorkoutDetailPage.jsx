@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getWorkoutExercisesInProgramById, updateWorkoutExercise } from "../../services/workout.service";
-// import ExerciseSelect from "../../components/ExerciseSelect/ExerciseSelect";
 import ExerciseCard from "../../components/ExerciseCard/ExerciseCard";
 import { useWorkoutTimer } from "../../hooks/useWorkoutTimer";
 import { createWorkoutSession } from "../../services/session.service"; 
@@ -11,12 +10,15 @@ import { updateSetData } from "../../services/set.service";
 
 
 const WorkoutDetailPage = () => {
+    const navigate = useNavigate(); 
     const { programId, workoutId } = useParams(); 
     const [workout, setWorkout] = useState(null); 
     const [error, setError] = useState(""); 
 
     const [session, setSession] = useState(null);
     const [isStarting, setIsStarting] = useState(false);
+
+    const [  retryCount, setRetryCount] = useState(0); 
 
     // Pass activeSession.startedAt into the custom timer hook
     const { formattedTime } = useWorkoutTimer(session?.startedAt);
@@ -52,6 +54,10 @@ const WorkoutDetailPage = () => {
         return updatedSet; //allows SetRow to refresh its draft with the normalized server values
       };
 
+      const handleRetry = () => {
+        setRetryCount(prev => prev + 1);
+      };
+
     useEffect(() => {
         const fetchWorkoutExercises = async () => {
             try {
@@ -62,7 +68,7 @@ const WorkoutDetailPage = () => {
             }
         }; 
         fetchWorkoutExercises(); 
-    }, [programId, workoutId]);
+    }, [programId, workoutId, retryCount]);
 
     const setsByWorkoutExerciseId = useMemo(() => {
         const groups = {};
@@ -101,15 +107,15 @@ const WorkoutDetailPage = () => {
         }
     };
 
-    if (error) return <ErrorState message={error} onRetry={fetchWorkoutExercises} />;
+    if (error) return <ErrorState message={error} onRetry={handleRetry} />;
     if (!workout) return <LoadingState message="Fetching workout details..." />;
     if (workout.length === 0) {
         return (
             <EmptyState 
                 title="No Exercises In Workout" 
                 message="This workout doesn't have any exercises assigned yet."
-                actionLabel="+ Add Exercise"
-                onAction={() => navigate("/exercises")}
+                actionLabel="Back to Dashboard"
+                onAction={() => navigate("/dashboard")}
             />
         );
     }
