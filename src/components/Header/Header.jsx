@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/authContext";
 
 function Header() {
   const navigate = useNavigate(); 
-  const { user, logout } = useContext(AuthContext); 
+  const { logout } = useContext(AuthContext); 
   const [ error, setError ] = useState(""); 
   const [ menuOpen, setMenuOpen ] = useState(false); // State for mobile menu toggle
 
