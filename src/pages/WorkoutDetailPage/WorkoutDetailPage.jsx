@@ -42,12 +42,12 @@ const WorkoutDetailPage = () => {
     const allSetsCompleted = session?.workoutSets?.length > 0 && session.workoutSets.every((set) => set.isCompleted === true);
 
     const handleFinishSession = async () => {
-        setIsFinishing(true);
         setError("");
         if (!allSetsCompleted) {
             const confirmed = window.confirm("Some sets are incomplete. Finish the workout anyway?");
             if (!confirmed) return; 
         }
+        setIsFinishing(true);
         try {
             // Calls backend route: POST /workout-sessions/:sessionId/finish
             await finishWorkoutSession(session.id);
