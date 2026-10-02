@@ -22,8 +22,6 @@
   overflow: hidden;
   color: var(--color-text-strong);
   font-size: var(--font-size-xl);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .expandBtn {
