@@ -1,4 +1,3 @@
-// StrengthFields.jsx
 export const StrengthSetFields = ({ formData, onChange, disabled, styles, ids }) => (
     <>
       <label htmlFor={ids.weight}>
@@ -10,6 +9,7 @@ export const StrengthSetFields = ({ formData, onChange, disabled, styles, ids })
           inputMode="decimal"
           min="0"
           max="999.99"
+          required
           step="0.01"
           value={formData.weightKg ?? ""}
           onChange={onChange}
@@ -27,6 +27,7 @@ export const StrengthSetFields = ({ formData, onChange, disabled, styles, ids })
           inputMode="numeric"
           min="1"
           max="30"
+          required
           step="1"
           value={formData.executedReps || ""}
           onChange={onChange}
