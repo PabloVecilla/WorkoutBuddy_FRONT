@@ -68,4 +68,8 @@
     & p.generateProgram {
         color: #942626;
     }
+    & p.successMessage {
+        color: var(--color-primary);
+        font-weight: bolder;
+    }
 }

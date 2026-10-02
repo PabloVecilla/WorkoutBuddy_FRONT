@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"; 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import apiClient from "../../api/client";
 
@@ -7,6 +7,8 @@ import styles from "./DashboardPage.module.css";
  
 
 const DashboardPage = () => {
+    const location = useLocation(); 
+    const successMessage = location.state?.message; 
     const navigate = useNavigate(); 
     const { user, loading } = useContext(AuthContext); 
     const [ programs, setPrograms ] = useState([]);
@@ -53,6 +55,7 @@ const DashboardPage = () => {
     return (
         <main className={styles.dashboardPage}>
             <h1>{user?.name}'s Programs</h1>
+            {successMessage && (<p className={styles.successMessage}>{successMessage}</p>)}
                 <div className={styles.cardsContainer}>
                     {programs.map(program => (
                             <article key={program.id}>

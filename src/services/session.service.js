@@ -6,6 +6,6 @@ export const createWorkoutSession = async (programId, workoutId) => {
 };
 
 export const finishWorkoutSession = async (sessionId) => {
-  const response = await apiClient.post(`/workout-sessions/${sessionId}/finish`);
+  const response = await apiClient.patch(`/workout-sessions/${sessionId}/finish`);
   return response.data.data;
 };

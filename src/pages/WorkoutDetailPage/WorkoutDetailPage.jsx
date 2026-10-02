@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getWorkoutExercisesInProgramById, updateWorkoutExercise } from "../../services/workout.service";
 import ExerciseCard from "../../components/ExerciseCard/ExerciseCard";
 import { useWorkoutTimer } from "../../hooks/useWorkoutTimer";
-import { createWorkoutSession } from "../../services/session.service"; 
+import { createWorkoutSession, finishWorkoutSession } from "../../services/session.service"; 
 import styles from "./WorkoutDetailPage.module.css"; 
 import { LoadingState, ErrorState, EmptyState } from "../../components/UI";
 import { updateSetData } from "../../services/set.service"; 
@@ -17,6 +17,7 @@ const WorkoutDetailPage = () => {
 
     const [session, setSession] = useState(null);
     const [isStarting, setIsStarting] = useState(false);
+    const [isFinishing, setIsFinishing] = useState(false); 
 
     const [  retryCount, setRetryCount] = useState(0); 
 
@@ -35,6 +36,20 @@ const WorkoutDetailPage = () => {
         setError(err.response?.data?.error?.message || "Failed to start session");
         } finally {
         setIsStarting(false);
+        }
+    };
+
+    const handleFinishSession = async () => {
+        setIsFinishing(true);
+        setError("");
+        try {
+            // Calls backend route: POST /workout-sessions/:sessionId/finish
+            await finishWorkoutSession(session.id);
+            navigate("/dashboard", { state: { message: "Workout Session completed successfully" } }); 
+        } catch (err) {
+            setError(err.response?.data?.error?.message || "Failed to finish session");
+        } finally {
+            setIsFinishing(false);
         }
     };
 
@@ -156,6 +171,14 @@ const WorkoutDetailPage = () => {
                     />
                 ))}
             </div>
+
+            <button 
+                className={styles.finishBtn} 
+                onClick={handleFinishSession} 
+                disabled={!session || isFinishing}
+            >
+                {isFinishing ? "Finishing..." : "Finish Session"}
+            </button>
         </main>
     );
 };
