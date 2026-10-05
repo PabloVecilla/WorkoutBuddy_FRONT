@@ -184,8 +184,8 @@ Because authentication uses HTTP-only cookies, the backend must allow the fronte
 
 ### Prerequisites
 
-- Node.js `20.19+` or `22.12+`
-- npm
+- Node.js `24.0+`
+- npm `11.0+`
 - A running [WorkoutBuddy backend](https://github.com/PabloVecilla/WorkoutBuddy_BACK)
 
 ### Clone the repository

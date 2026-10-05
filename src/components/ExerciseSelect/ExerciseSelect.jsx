@@ -42,6 +42,10 @@ const ExerciseSelectHeader = ({ currentExercise, onExerciseChange, disabled = fa
     }
   };
 
+  const filteredOptions = options.filter(
+    (exercise) => exercise.id !== currentExercise?.id
+  );
+
   return (
     <div className={styles.container} ref={dropdownRef}>
       <div className={styles.headerBar}>
@@ -57,17 +61,18 @@ const ExerciseSelectHeader = ({ currentExercise, onExerciseChange, disabled = fa
         </button>
       </div>
 
+
+
       {isOpen && (
-        <ul className={styles.dropdownMenu}>
+
+        <ul className={styles.dropdownMenu} role="listbox">
           {isLoading ? (
             <li className={styles.emptyOption}>Loading alternatives...</li>
-          ) : options.length > 0 ? (
-            options.map((exercise) => (
+          ) : filteredOptions.length > 0 ? (
+            filteredOptions.map((exercise) => (
               <li
                 key={exercise.id}
-                className={`${styles.optionItem} ${
-                  currentExercise?.id === exercise.id ? styles.activeOption : ""
-                }`}
+                className={styles.optionItem}
                 onClick={() => handleSelect(exercise)}
               >
                 {exercise.name}

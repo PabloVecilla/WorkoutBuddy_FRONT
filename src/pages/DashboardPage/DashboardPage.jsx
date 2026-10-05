@@ -37,7 +37,7 @@ const DashboardPage = () => {
 
     const handleDeleteProgram = async (programId) => { 
         
-        const confirmDelete = window.confirm("Deleiton will eliminate your Program and all program data. Sure to proceed?");
+        const confirmDelete = window.confirm("Deleting your Program will eliminate all program data. Sure to proceed?");
         if (!confirmDelete) return;
 
         try {
