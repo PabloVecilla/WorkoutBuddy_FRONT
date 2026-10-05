@@ -1,0 +1,96 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.headerBar {
+  width: 100%;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.headerBar h2 {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-text-strong);
+  font-size: var(--font-size-xl);
+}
+
+.expandBtn {
+  min-height: auto;
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-3);
+  border-color: var(--color-border);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.expandBtn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
+  color: var(--color-primary);
+}
+
+.expandBtn:disabled {
+  background-color: var(--color-surface-muted);
+}
+
+.dropdownMenu {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + var(--space-2));
+  right: 0;
+  left: 0;
+  max-height: 15rem;
+  margin: 0;
+  padding: var(--space-1);
+  overflow-y: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-raised);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+}
+
+.optionItem,
+.emptyOption {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.optionItem {
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.optionItem:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-strong);
+}
+
+.activeOption {
+  background-color: var(--color-primary-surface);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.emptyOption {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}

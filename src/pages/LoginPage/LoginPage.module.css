@@ -3,27 +3,53 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: black;
-    color: white;
+    background-color: var(--color-background);
+    color: var(--color-text-strong);
     min-height: 100vh;
     flex: 1;
 
     & form {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 20px;
-        background-color: #222222;
         padding: 10px;
-        border-radius: 10px;
     }
-    & p {
+    & article {
+        padding: 12px;
+        background-color: var(--color-surface);
+        border-radius: var(--radius-lg);
         width: 300px;
+        color: var(--color-text);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
+
+    }
+    article label {
+        font-weight: 900;
+        font-size: large;
     }
 
     & input, select {
         width: 60%;
+        padding: 5px;
+        border-radius: var(--radius-lg);
+        font-size: 1.25rem;
+        background-color: var(--color-background);
+        color: var(--color-text-strong);
+    }
+    & button {
+        padding: 12px;
+        background-color: var(--color-surface);
+        border-radius: var(--radius-lg);
+        width: 300px;
+        color: var(--color-text);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.25rem;
     }
 }

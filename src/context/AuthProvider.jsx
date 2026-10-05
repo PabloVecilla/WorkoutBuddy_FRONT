@@ -1,75 +1,86 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
 import apiClient from "../api/client";
 
+const getApiErrorMessage = (err, fallback) =>
+  err.response?.data?.error?.message || fallback;
+
 export function AuthProvider({ children }) {
-    const [ user, setUser ] = useState(null); 
-    const [ error, setError ] = useState(""); 
-    const [ loading, setLoading ] = useState(true); 
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const fetchUser = async () => {
+  useEffect(() => {
+    const controller = new AbortController();
 
-        try {
-            const response = await apiClient.get("/auth/me"); 
-            
-            setUser(response.data); 
-            setError(""); 
+    apiClient
+      .get("/auth/me", {
+        signal: controller.signal,
+      })
+      .then((response) => {
+        if (controller.signal.aborted) return;
 
-        } catch (err) {
-            setUser(null); 
-        } finally {
-            setLoading(false); 
+        setUser(response.data.data);
+      })
+      .catch(() => {
+        if (controller.signal.aborted) return;
+
+        setUser(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
         }
-    }; 
-    useEffect(() => {
-        fetchUser(); 
-    }, []); 
+      });
 
-   
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
-    const login = async (credentials) => {
-        setError(""); 
+  const login = async (credentials) => {
+    try {
+      const response = await apiClient.post(
+        "/auth/login",
+        credentials
+      );
 
-        try {
-            const response = await apiClient.post("/auth/login", credentials); 
+      const authenticatedUser = response.data.data;
 
-            setUser(response.data); 
+      setUser(authenticatedUser);
 
-            return response; 
+      return authenticatedUser;
+    } catch (err) {
+      const message = getApiErrorMessage(err, "Login failed");
 
-        } catch (err) {
-            const message = err.response?.data?.message || "Login failed"; 
-            setError( message ); 
-            throw new Error(message); 
-        }
-    }; 
+      throw new Error(message, {
+        cause: err,
+      });
+    }
+  };
 
-    const logout = async () => {
-        try {
-            await apiClient.post("/auth/logout"); 
+  const logout = async () => {
+    try {
+      await apiClient.post("/auth/logout");
+      setUser(null);
+    } catch (err) {
+      const message = getApiErrorMessage(err, "Logout failed");
 
-            setUser(null); 
+      throw new Error(message, {
+        cause: err,
+      });
+    }
+  };
 
-        } catch (err) {
-            const message = err.response?.data?.error?.message || "Logout failed"; 
-            setError( message ); 
-            throw new Error(message); 
-        }
-    }; 
-
-    return (
-        <AuthContext.Provider
-          value={{
-            user,
-            error,
-            loading,
-            setError,
-            login,
-            logout,
-            fetchUser
-          }}
-        >
-          {children}
-        </AuthContext.Provider>
-      ); 
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

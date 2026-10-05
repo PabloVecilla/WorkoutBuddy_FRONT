@@ -1,5 +1,5 @@
 import axios from "axios"; 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // --> env variable for BE url
 
 const apiClient = axios.create({ // --> creates an axios instance, reusable for each request
     baseURL: API_URL,

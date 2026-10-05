@@ -1,56 +1,113 @@
 .workoutDetailPage {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    min-height: 100%;
+    padding: var(--space-6) var(--page-inline-padding) var(--space-12);
     align-items: center;
-    background-color: black;
-    color: white;
-    min-height: 100vh;
-    flex: 1;
+    gap: var(--space-6);
+    background:
+      radial-gradient(
+        circle at top,
+        rgb(74 222 128 / 8%),
+        transparent 28rem
+      ),
+      var(--color-background);
+    color: var(--color-text);
+  }
+  
+  .sessionHeader {
+    width: min(100%, var(--content-width-md));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border-subtle);
+  }
+  
+  .sessionHeader h1 {
+    margin: 0;
+  }
+  
+  .startBtn {
+    min-width: 10rem;
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .startBtn:hover:not(:disabled) {
+    border-color: var(--color-primary-hover);
+    background-color: var(--color-primary-hover);
+  }
+  
+  .timerDisplay {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-width) solid var(--color-primary-active);
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .pulseDot {
+    width: 0.625rem;
+    height: 0.625rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  .contentWrapper {
+    width: min(100%, var(--content-width-md) max(100vw));
+    display: grid;
+    gap: var(--space-6);
+  }
+  
+  .errorText {
+    width: min(100%, var(--content-width-md));
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-red-700);
+    border-radius: var(--radius-md);
+    background-color: var(--color-danger-surface);
+    color: var(--color-red-300);
+  }
+  
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  
+    50% {
+      opacity: 0.4;
+      transform: scale(0.8);
+    }
+  }
+  
+  @media (max-width: 36rem) {
+    .workoutDetailPage {
+      padding-top: var(--space-4);
+    }
+  
+    .sessionHeader {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .startBtn,
+    .timerDisplay {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 
-    & h1, h2 {
-        color: whitesmoke
-    }
-
-    & .cardsContainer {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    & .link {
-        text-decoration: none;
-        color: whitesmoke;
-    }
-
-    & article {
-        padding: 8px;
-        background-color: #222222;
-        border-radius: 10px;
-        width: 300px;
-
-    }
-
-    & header {
-        font-weight: bolder;
-    }
-
-    & ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    & li {
-        margin: 0;
-        list-style: none;
-        width: 70%;
-        margin: auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    & p.name {
-        font-size: 1.1rem;
-        font-weight: 900;
-    }
-}

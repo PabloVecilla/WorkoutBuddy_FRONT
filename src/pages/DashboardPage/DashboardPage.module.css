@@ -3,13 +3,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: black;
-    color: white;
+    background-color: var(--color-background);
+    color: var(--color-text-strong);
     min-height: 100dvh;
     flex: 1;
 
     & h1, h2 {
-        color: whitesmoke
+        color: var(--color-text)
     }
 
     & .cardsContainer {
@@ -20,15 +20,31 @@
 
     & .link {
         text-decoration: none;
-        color: whitesmoke;
+        color: var(--color-text);
     }
 
-    & article {
+    & article, button {
         padding: 8px;
-        background-color: #222222;
-        border-radius: 10px;
-        width: 300px;
+        background-color: var(--color-surface);
+        border-radius: var(--radius-lg);
+        color: var(--color-text);
+    }
 
+    & button.generateProgram {
+        font-size: large;
+        font-weight: 900;
+        width: 300px;
+    }
+
+    & button.deleteProgram {
+        margin-top: 5px;
+        font-weight: bolder;
+        width: 275px;
+        background-color: var(--color-danger);
+    }
+
+    & button.deleteProgram:hover {
+        background-color: var(--color-danger-hover);
     }
 
     & header {
@@ -48,5 +64,12 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+    & p.generateProgram {
+        color: #942626;
+    }
+    & p.successMessage {
+        color: var(--color-primary);
+        font-weight: bolder;
     }
 }
