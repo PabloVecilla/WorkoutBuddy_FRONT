@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./SetRow.module.css";
 import { CardioSetFields } from "./SetRowFields/CardioSetFields";
 import { StrengthSetFields } from "./SetRowFields/StrengthSetFields";
@@ -17,10 +17,7 @@ const SetRow = ({
           durationMinutes: workoutSet.durationMinutes ?? "",
         }
       : {
-          weightKg:
-            workoutSet.weightKg ??
-            workingWeightKg ??
-            "",
+          weightKg: workoutSet.weightKg ?? "",
           executedReps: workoutSet.executedReps ?? "",
         }
   );
@@ -29,25 +26,10 @@ const SetRow = ({
   const [error, setError] = useState("");
   const [weightWasEdited, setWeightWasEdited] = useState(false);
 
-  useEffect(() => {
-    if (
-      mode !== "strength" ||
-      workoutSet.isCompleted ||
-      weightWasEdited
-    ) {
-      return;
-    }
-
-    setFormData((currentData) => ({
-      ...currentData,
-      weightKg: workingWeightKg ?? "",
-    }));
-  }, [
-    mode,
-    workingWeightKg,
-    workoutSet.isCompleted,
-    weightWasEdited,
-  ]);
+  const effectiveWeightKg = mode === "strength" && 
+  formData.weightKg === "" && 
+  !weightWasEdited && 
+  !workoutSet.isCompleted ? workingWeightKg ?? "" : formData.weightKg; 
 
   const ids = {
     weight: `weight-${workoutSet.id}`,
@@ -113,15 +95,12 @@ const SetRow = ({
         durationMinutes,
       };
     } else {
-      if (
-        formData.weightKg === "" ||
-        formData.executedReps === ""
-      ) {
+      if ( effectiveWeightKg === "" || formData.executedReps === "") {
         setError("Enter weight and completed reps");
         return;
       }
 
-      const weightKg = Number(formData.weightKg);
+      const weightKg = Number(effectiveWeightKg);
       const executedReps = Number(formData.executedReps);
 
       if (
@@ -200,7 +179,7 @@ const SetRow = ({
           />
         ) : (
           <StrengthSetFields
-            formData={formData}
+            formData={{...formData, weightKg: effectiveWeightKg}}
             onChange={handleChange}
             disabled={disabled || isSaving}
             styles={styles}

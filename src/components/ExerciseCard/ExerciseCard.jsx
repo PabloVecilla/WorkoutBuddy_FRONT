@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ExerciseSelect from "../ExerciseSelect/ExerciseSelect";
 import styles from "./ExerciseCard.module.css";
 import SetRow from "../SetRow/SetRow";
@@ -23,10 +23,6 @@ const ExerciseCard = ({
   const [draftWeightKg, setDraftWeightKg] = useState(
     workingWeightKg ?? ""
   ); 
-
-  useEffect(() => {
-    setDraftWeightKg(workingWeightKg ?? ""); 
-  }, [workingWeightKg]); 
 
   const mode = workoutExercise.exercise.movementPattern === "cardio" ? "cardio" : "strength"; 
 
