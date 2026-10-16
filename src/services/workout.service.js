@@ -5,10 +5,10 @@ export const getWorkoutExercisesInProgramById = async (programId, workoutId) => 
   return response.data.data;
 };
 
-export const updateWorkoutExercise = async (programId, workoutId, workoutExerciseId, newExerciseId) => {
+export const updateWorkoutExercise = async (programId, workoutId, workoutExerciseId, updates) => {
     const response = await apiClient.patch(
       `/programs/${programId}/workouts/${workoutId}/workout-exercises/${workoutExerciseId}`,
-      { exerciseId: newExerciseId }
+      updates
     );
     return response.data.data;
 };
