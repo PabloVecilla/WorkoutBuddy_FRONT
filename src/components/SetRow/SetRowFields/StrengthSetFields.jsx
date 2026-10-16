@@ -10,7 +10,7 @@ export const StrengthSetFields = ({ formData, onChange, disabled, styles, ids })
           min="0"
           max="999.99"
           required
-          step="0.01"
+          step="0.25"
           value={formData.weightKg ?? ""}
           onChange={onChange}
           disabled={disabled}
@@ -29,7 +29,7 @@ export const StrengthSetFields = ({ formData, onChange, disabled, styles, ids })
           max="30"
           required
           step="1"
-          value={formData.executedReps || ""}
+          value={formData.executedReps ?? ""} // ?? fallback only when value is null or undefined  Preserves 0
           onChange={onChange}
           disabled={disabled}
           className={styles.input}
