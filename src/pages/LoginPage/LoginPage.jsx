@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
+import { LoadingState } from '../../components/UI';
 import styles from './LoginPage.module.css';
 
 const LoginPage = () => {
@@ -14,7 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmiting] = useState(false); 
 
-  if (loading) return <p>Checking session...</p>
+  if (loading) return <LoadingState message="Waking up your workout..." />
 
   if (user) return <Navigate to="/dashboard" replace /> 
 
