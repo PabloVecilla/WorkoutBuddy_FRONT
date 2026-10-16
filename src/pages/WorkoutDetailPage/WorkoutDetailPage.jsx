@@ -24,6 +24,34 @@ const WorkoutDetailPage = () => {
     // Pass activeSession.startedAt into the custom timer hook
     const { formattedTime } = useWorkoutTimer(session?.startedAt);
 
+    const [ workingWeights, setWorkingWeights ] = useState({}); 
+
+    const handleWorkingWeightChange = (workoutExerciseId, weightKg) => {
+        setWorkingWeights((current) => ({
+            ...current, 
+            [workoutExerciseId]: weightKg
+        }))
+    }; 
+
+    const persistWorkingWeights = async () => {
+        const requests = Object.entries(workingWeights).filter(([, weightKg]) => weightKg !== "")
+                                                        .map(([workoutExerciseId, weightKg]) => {
+                                                            const numericWeight = Number(weightKg); 
+
+                                                            if (!Number.isFinite(numericWeight)||
+                                                                numericWeight < 0 || numericWeight > 999.99)
+                                                                throw new Error ("Invalid working weight"); 
+
+                                                            return updateWorkoutExercise(
+                                                                programId,
+                                                                workoutId,
+                                                                Number(workoutExerciseId),
+                                                                { weightKg: numericWeight }
+                                                            );
+                                                        } ); 
+        await Promise.all(requests); 
+    }; 
+
     // Handle Start Session button click
     const handleStartSession = async () => {
         setIsStarting(true);
@@ -43,6 +71,8 @@ const WorkoutDetailPage = () => {
 
     const handleFinishSession = async () => {
         setError("");
+        if (!session) return; 
+
         if (!allSetsCompleted) {
             const confirmed = window.confirm("Some sets are incomplete. Finish the workout anyway?");
             if (!confirmed) return; 
@@ -51,6 +81,8 @@ const WorkoutDetailPage = () => {
         try {
             // Calls backend route: POST /workout-sessions/:sessionId/finish
             await finishWorkoutSession(session.id);
+            await persistWorkingWeights(); 
+
             navigate("/dashboard", { state: { message: "Workout Session completed successfully" } }); 
         } catch (err) {
             setError(err.response?.data?.error?.message || "Failed to finish session");
@@ -73,11 +105,12 @@ const WorkoutDetailPage = () => {
           ),
         }));
         return updatedSet; //allows SetRow to refresh its draft with the normalized server values
-      };
+    };
 
-      const handleRetry = () => {
-        setRetryCount(prev => prev + 1);
-      };
+    const handleRetry = () => {
+    setError(""); 
+    setRetryCount(prev => prev + 1);
+    };
 
     useEffect(() => {
         const fetchWorkoutExercises = async () => {
@@ -113,7 +146,7 @@ const WorkoutDetailPage = () => {
 
     const handleExerciseChange = async (workoutExerciseId, newExercise) => {
         try {
-            await updateWorkoutExercise(programId, workoutId, workoutExerciseId, newExercise.id);
+            await updateWorkoutExercise(programId, workoutId, workoutExerciseId, {exerciseId: newExercise.id});
             
             // Optimistically update the local exercise state
             setWorkout((prev) =>
@@ -170,8 +203,10 @@ const WorkoutDetailPage = () => {
                     <ExerciseCard
                         key={workoutExercise.id}
                         workoutExercise={workoutExercise}
+                        workingWeightKg={ workingWeights[workoutExercise.id] ?? workoutExercise.weightKg ?? "" }
                         sessionSets={ setsByWorkoutExerciseId[workoutExercise.id] ?? [] }
-                        sessionActive={session?.isInProgress === true}                        
+                        sessionActive={session?.isInProgress === true}  
+                        onWorkingWeightChange={(weightKg) => handleWorkingWeightChange(workoutExercise.id, weightKg)}                      
                         onExerciseChange={handleExerciseChange}
                         onSetUpdate={handleSetUpdate}
                     />

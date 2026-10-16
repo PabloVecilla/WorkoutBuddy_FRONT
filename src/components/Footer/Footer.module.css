@@ -1,0 +1,35 @@
+.footer_page {
+    background-color: black;
+    color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding-top: 12px;
+    padding-bottom: 24px;
+
+    & a {
+        text-decoration: none;
+        color: whitesmoke;
+    }
+    & a:hover {
+        color: white;
+        transition: ease-in-out;
+    }
+
+    & .heartBeat {
+        color: blue;
+        display: inline-block;
+        animation: beat 0.8s infinite alternate ease-in-out;
+    }
+}
+    /* heartbeat effect:: */
+@keyframes beat {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.3); 
+    }
+}
