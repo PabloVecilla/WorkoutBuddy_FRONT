@@ -18,7 +18,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 2px;
-    color: var(--color-primary);
+    color: var(--color-text);
     animation: pulseWeight 1.2s infinite ease-in-out;
     margin-bottom: 0.75rem;
   }
