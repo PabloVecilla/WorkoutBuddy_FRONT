@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import apiClient from "../../api/client";
+import { LoadingState } from "../../components/UI";
 
 import styles from "./DashboardPage.module.css"; 
  
@@ -50,7 +51,7 @@ const DashboardPage = () => {
         }
     }; 
 
-    if (loading) return <p>loading...</p>; 
+    if (loading) return <LoadingState message="Loading your programs..." />; 
 
     return (
         <main className={styles.dashboardPage}>

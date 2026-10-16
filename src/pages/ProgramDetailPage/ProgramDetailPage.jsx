@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { getProgramById } from "../../services/program.service";
+import { LoadingState } from "../../components/UI";
 import styles from "./ProgramDetailPage.module.css";
 
 const ProgramDetailPage = () => {
@@ -24,9 +25,9 @@ const ProgramDetailPage = () => {
         fetchProgram(); 
     }, [id]);
 
-    if (loading) return <p>loading...</p>; 
+    if (loading) return <LoadingState message="Loading your program..." />; 
     if (error) return <p>{error}</p>;
-    if (!program) return <p>Fetching program details...</p>; 
+    if (!program) return <LoadingState message="Fetching program details..." />; 
 
     const formatDBInput = (text) => {
         const withSpaces = text.replaceAll('_', ' '); 
